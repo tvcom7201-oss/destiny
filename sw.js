@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tepsa-007-v7';
+const CACHE_NAME = 'tepsa-007-v9';
 const STATIC_ASSETS = [
   './',
   './index.html',

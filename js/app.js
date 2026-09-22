@@ -436,7 +436,23 @@ async function* callGeminiStream(prompt, systemInstruction = '') {
 if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
   window.addEventListener('load', () => {
     const swPath = location.pathname.includes('pages') ? '../sw.js' : './sw.js';
-    navigator.serviceWorker.register(swPath).catch(() => {});
+    const hadController = Boolean(navigator.serviceWorker.controller);
+    let refreshed = false;
+
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!hadController || refreshed) return;
+      refreshed = true;
+      window.location.reload();
+    });
+
+    navigator.serviceWorker.register(swPath).then((registration) => {
+      registration.update().catch(() => {});
+      setInterval(() => registration.update().catch(() => {}), 5 * 60 * 1000);
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') registration.update().catch(() => {});
+      });
+    }).catch(() => {});
   });
 }
 
