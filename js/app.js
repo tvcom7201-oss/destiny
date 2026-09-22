@@ -286,18 +286,24 @@ class PWAInstaller {
   constructor() {
     this.deferredPrompt = null;
     this.banner = document.getElementById('install-banner');
+    this.isMobileDevice = this._isMobileDevice();
+    this.dismissed = Boolean(Store.get(STORAGE.DISMISSED_PWA, false));
+    this.showTimer = null;
     this._setup();
   }
 
   _setup() {
     // Android/Chrome
     window.addEventListener('beforeinstallprompt', (e) => {
+      if (!this.isMobileDevice) return;
       e.preventDefault();
       this.deferredPrompt = e;
-      if (!Store.get(STORAGE.DISMISSED_PWA)) this._showBanner();
+      if (!this.isDismissed()) this._showBanner();
     });
 
     window.addEventListener('appinstalled', () => {
+      this.dismissed = true;
+      Store.set(STORAGE.DISMISSED_PWA, true);
       this._hideBanner();
       showToast('ติดตั้งแอปสำเร็จแล้ว! 🎉', 'success', 4000);
     });
@@ -305,22 +311,38 @@ class PWAInstaller {
     // iOS Safari
     const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
     const isStandalone = window.navigator.standalone;
-    if (isIOS && !isStandalone && !Store.get(STORAGE.DISMISSED_PWA)) {
+    if (isIOS && !isStandalone && !this.isDismissed()) {
       setTimeout(() => this._showIOSBanner(), 2000);
     }
 
     document.getElementById('btn-install-pwa')?.addEventListener('click', () => this._install());
     document.getElementById('btn-dismiss-pwa')?.addEventListener('click', () => {
+      this.dismissed = true;
       Store.set(STORAGE.DISMISSED_PWA, true);
+      if (this.showTimer) clearTimeout(this.showTimer);
       this._hideBanner();
     });
   }
 
   _showBanner() {
-    setTimeout(() => this.banner?.classList.add('show'), 1500);
+    if (!this.isMobileDevice || this.isDismissed() || !this.banner) return;
+    this.showTimer = setTimeout(() => {
+      if (!this.isDismissed()) this.banner?.classList.add('show');
+    }, 1500);
   }
 
   _hideBanner() { this.banner?.classList.remove('show'); }
+
+  _isMobileDevice() {
+    const userAgent = navigator.userAgent || '';
+    const isPhoneOrTablet = /Android|iPhone|iPad|iPod|Windows Phone/i.test(userAgent);
+    const isIPadDesktopMode = /Macintosh/i.test(userAgent) && navigator.maxTouchPoints > 1;
+    return isPhoneOrTablet || isIPadDesktopMode;
+  }
+
+  isDismissed() {
+    return this.dismissed || Boolean(Store.get(STORAGE.DISMISSED_PWA, false));
+  }
 
   async _install() {
     if (!this.deferredPrompt) return;
@@ -328,11 +350,13 @@ class PWAInstaller {
     const { outcome } = await this.deferredPrompt.userChoice;
     if (outcome === 'accepted') Store.set(STORAGE.DISMISSED_PWA, true);
     this.deferredPrompt = null;
+    this.dismissed = true;
+    Store.set(STORAGE.DISMISSED_PWA, true);
     this._hideBanner();
   }
 
   _showIOSBanner() {
-    if (!this.banner) return;
+    if (!this.isMobileDevice || !this.banner || this.isDismissed()) return;
     const icon = this.banner.querySelector('.install-banner-icon');
     const strong = this.banner.querySelector('.install-banner-text strong');
     const span   = this.banner.querySelector('.install-banner-text span');

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tepsa-007-v9';
+const CACHE_NAME = 'tepsa-007-v10';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -44,10 +44,15 @@ self.addEventListener('activate', (event) => {
 // Fetch - network first, fallback cache
 self.addEventListener('fetch', (event) => {
   // Skip cross-origin requests (API calls)
-  if (!event.request.url.startsWith(self.location.origin)) return;
+  if (!event.request.url.startsWith(self.location.origin) || event.request.method !== 'GET') return;
+
+  const liveDestinations = new Set(['document', 'script', 'style']);
+  const request = liveDestinations.has(event.request.destination)
+    ? new Request(event.request, { cache: 'no-store' })
+    : event.request;
 
   event.respondWith(
-    fetch(event.request)
+    fetch(request)
       .then((response) => {
         if (response.ok) {
           const cloned = response.clone();
