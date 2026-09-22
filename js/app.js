@@ -287,15 +287,25 @@ class PWAInstaller {
     this.deferredPrompt = null;
     this.banner = document.getElementById('install-banner');
     this.isMobileDevice = this._isMobileDevice();
-    this.dismissed = Boolean(Store.get(STORAGE.DISMISSED_PWA, false));
+    this.isHomePage = !/\/pages\//i.test(location.pathname);
+    this.isInstalled = this._isInstalled();
+    this.dismissed = false;
     this.showTimer = null;
+    this.reminderTimer = null;
     this._setup();
   }
 
   _setup() {
+    if (!this.isMobileDevice || !this.isHomePage || this.isInstalled) return;
+
+    // Show our mobile install reminder even when the browser delays its native prompt.
+    this._showBanner();
+    this.reminderTimer = setInterval(() => {
+      if (!this.isDismissed() && !this.isInstalled) this._showBanner();
+    }, 30000);
+
     // Android/Chrome
     window.addEventListener('beforeinstallprompt', (e) => {
-      if (!this.isMobileDevice) return;
       e.preventDefault();
       this.deferredPrompt = e;
       if (!this.isDismissed()) this._showBanner();
@@ -303,7 +313,7 @@ class PWAInstaller {
 
     window.addEventListener('appinstalled', () => {
       this.dismissed = true;
-      Store.set(STORAGE.DISMISSED_PWA, true);
+      this.isInstalled = true;
       this._hideBanner();
       showToast('ติดตั้งแอปสำเร็จแล้ว! 🎉', 'success', 4000);
     });
@@ -318,7 +328,6 @@ class PWAInstaller {
     document.getElementById('btn-install-pwa')?.addEventListener('click', () => this._install());
     document.getElementById('btn-dismiss-pwa')?.addEventListener('click', () => {
       this.dismissed = true;
-      Store.set(STORAGE.DISMISSED_PWA, true);
       if (this.showTimer) clearTimeout(this.showTimer);
       this._hideBanner();
     });
@@ -333,6 +342,12 @@ class PWAInstaller {
 
   _hideBanner() { this.banner?.classList.remove('show'); }
 
+  _isInstalled() {
+    return window.matchMedia?.('(display-mode: standalone)').matches
+      || window.navigator.standalone === true
+      || document.referrer.startsWith('android-app://');
+  }
+
   _isMobileDevice() {
     const userAgent = navigator.userAgent || '';
     const isPhoneOrTablet = /Android|iPhone|iPad|iPod|Windows Phone/i.test(userAgent);
@@ -341,17 +356,18 @@ class PWAInstaller {
   }
 
   isDismissed() {
-    return this.dismissed || Boolean(Store.get(STORAGE.DISMISSED_PWA, false));
+    return this.dismissed;
   }
 
   async _install() {
-    if (!this.deferredPrompt) return;
+    if (!this.deferredPrompt) {
+      showToast('เบราว์เซอร์ยังไม่พร้อมสำหรับการติดตั้ง ลองกดอีกครั้งสักครู่', 'info', 3500);
+      return;
+    }
     this.deferredPrompt.prompt();
     const { outcome } = await this.deferredPrompt.userChoice;
-    if (outcome === 'accepted') Store.set(STORAGE.DISMISSED_PWA, true);
     this.deferredPrompt = null;
-    this.dismissed = true;
-    Store.set(STORAGE.DISMISSED_PWA, true);
+    if (outcome === 'accepted') this.dismissed = true;
     this._hideBanner();
   }
 
