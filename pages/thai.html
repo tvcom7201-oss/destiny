@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ไสยศาสตร์ไทย — เทพซ่า 007</title>
+  <meta name="description" content="ดูดวงคอขาด ถามดวงกับหมอดู AI และวิเคราะห์ตามตำราโบราณ ตำราพรหมชาติ กราฟชีวิต ทักษาปกรณ์ สุริยยาตร์" />
+  <meta name="theme-color" content="#7c3aed" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="manifest" href="../manifest.json" />
+  <link rel="apple-touch-icon" href="../icons/icon-192.png" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+<div class="stars-bg"></div>
+<div class="nebula-orbs">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<!-- ========== Navbar ========== -->
+<nav class="navbar" role="navigation" aria-label="เมนูนำทาง">
+  <div style="display:flex; align-items:center; gap:0.75rem;">
+    <a href="../index.html" class="btn-back" aria-label="กลับหน้าแรก">← กลับ</a>
+    <span class="navbar-sep" style="color:var(--text-muted); font-size:0.85rem;">|</span>
+    <span class="navbar-logo" style="cursor:default;">
+      <span style="font-size:1.25rem;">🪬</span>
+      <span class="logo-text" style="font-size:0.95rem;">ไสยศาสตร์ไทย</span>
+    </span>
+  </div>
+  <div class="navbar-actions">
+    <button class="btn-icon" id="btn-settings" aria-label="การตั้งค่า" title="การตั้งค่า">⚙️</button>
+  </div>
+</nav>
+
+<!-- ========== Settings Panel (shared component) ========== -->
+<div class="settings-overlay" id="settings-overlay" role="dialog" aria-modal="true" aria-labelledby="settings-title"></div>
+<aside class="settings-panel" id="settings-panel">
+  <div class="settings-header">
+    <h2 id="settings-title">⚙️ การตั้งค่า</h2>
+    <button class="btn-icon" id="btn-settings-close" aria-label="ปิด">✕</button>
+  </div>
+  <div class="settings-body">
+    <div class="settings-section">
+      <label for="setting-api-key">🔑 Gemini API Key</label>
+      <div class="input-group">
+        <input type="password" id="setting-api-key" placeholder="AIzaSy..." autocomplete="off" spellcheck="false" />
+        <button class="input-toggle-eye" id="toggle-eye" aria-label="แสดง/ซ่อน">👁</button>
+      </div>
+      <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" class="settings-link">
+        🔗 รับ API Key ฟรีที่ Google AI Studio →
+      </a>
+    </div>
+    <div class="settings-divider"></div>
+    <div class="settings-section">
+      <label for="setting-voice">🔊 โมเดลเสียงอ่าน</label>
+      <div class="settings-select-wrapper">
+        <select id="setting-voice" aria-label="เลือกเสียงอ่าน">
+          <option value="auto">✨ อัตโนมัติ — เสียงธรรมชาติ (แนะนำ)</option>
+        </select>
+      </div>
+      <div class="settings-hint">แสดงเฉพาะเสียงภาษาไทยที่ติดตั้งอยู่ใน Microsoft Edge หรือระบบของคุณ</div>
+    </div>
+    <div class="settings-divider"></div>
+    <div class="settings-section">
+      <label for="setting-model">🤖 เลือกโมเดล AI</label>
+      <div class="settings-select-wrapper">
+        <select id="setting-model" aria-label="เลือกโมเดล Gemini">
+          <option value="models/gemini-2.5-flash">✨ Gemini 2.5 Flash</option>
+        </select>
+      </div>
+      <div id="model-status" class="model-status" style="display:none;"></div>
+      <button
+        type="button"
+        style="margin-top:0.5rem; width:100%; padding:0.5rem; border-radius:8px; border:1px solid var(--border-glass); background:var(--bg-glass); color:var(--text-secondary); font-family:Sarabun,sans-serif; font-size:0.82rem; cursor:pointer;"
+        id="btn-refresh-models"
+        onclick="(function(){
+          const key=document.getElementById('setting-api-key').value.trim()||window.Store.get(window.STORAGE.API_KEY,'');
+          if(!key){window.showToast('กรุณาใส่ API Key ก่อน','error');return;}
+          const el=document.getElementById('model-status');el.style.display='block';
+          window.modelManager.fetchModels(key,true);
+        })()">
+        🔄 โหลดโมเดลใหม่จาก API
+      </button>
+    </div>
+    <div class="settings-divider"></div>
+    <div class="settings-section">
+      <label>ℹ️ ข้อมูล</label>
+      <div style="font-size:0.82rem; color:var(--text-muted); line-height:1.7;">
+        ข้อมูลดวงกำเนิดและประวัติการถามดวง บันทึกในเครื่องของคุณเท่านั้น (LocalStorage) ไม่มีการส่งไปที่อื่นนอกจาก Google Gemini API
+      </div>
+    </div>
+  </div>
+  <div class="settings-footer">
+    <button class="btn-save" id="btn-save-settings">💾 บันทึก</button>
+    <button class="btn-clear-data" id="btn-clear-data">🗑️ ล้างทั้งหมด</button>
+  </div>
+</aside>
+
+<!-- ========== Page ========== -->
+<main class="astro-wrapper">
+
+  <!-- Mode chooser -->
+  <section id="thai-modes">
+    <header class="astro-hero">
+      <div class="astro-hero-icon">🪬</div>
+      <h1>ไสยศาสตร์ไทย</h1>
+      <p>เลือกศาสตร์ที่ต้องการ แล้วให้โหราจารย์ AI เปิดตำราให้คุณ</p>
+    </header>
+
+    <div class="thai-mode-grid" role="list">
+      <button class="thai-mode-card card-purple" data-mode="khad" role="listitem" type="button">
+        <span class="thai-mode-icon">🌙</span>
+        <span class="thai-mode-name">ดูดวงคอขาดของตัวเอง</span>
+        <span class="thai-mode-desc">กรอกวัน-เดือน-ปี-เวลาเกิด แล้วให้ AI เปิดเกณฑ์ชะตาตามตำราพรหมชาติแบบหมดเปลือก</span>
+        <span class="thai-mode-tag">ต้องใช้ข้อมูลเกิด</span>
+      </button>
+
+      <button class="thai-mode-card card-gold" data-mode="chat" role="listitem" type="button">
+        <span class="thai-mode-icon">💬</span>
+        <span class="thai-mode-name">ถามดวงกับเทพซ่า</span>
+        <span class="thai-mode-desc">กรอกดวงกำเนิดครั้งเดียว จากนั้นถามได้ทุกเรื่อง การงาน การเงิน ความรัก โชคลาภ</span>
+        <span class="thai-mode-tag">แชทบอท AI</span>
+      </button>
+
+      <button class="thai-mode-card card-pink" data-mode="tamra" role="listitem" type="button">
+        <span class="thai-mode-icon">📜</span>
+        <span class="thai-mode-name">วิเคราะห์ตามตำราโบราณ</span>
+        <span class="thai-mode-desc">พรหมชาติ 12 ราศี · กราฟชีวิต · สุริยยาตร์/ลัคนา · ทักษาปกรณ์ และวิเคราะห์ข้อความจากเว็บอื่นได้</span>
+        <span class="thai-mode-tag">รวมหลายตำรา</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Workspace -->
+  <section id="thai-workspace" hidden>
+    <div class="thai-ws-head">
+      <button class="btn-back" id="thai-ws-back" type="button">← เปลี่ยนศาสตร์</button>
+      <div class="thai-ws-title">
+        <span class="thai-ws-icon" id="thai-ws-icon">🌙</span>
+        <div>
+          <h2 id="thai-ws-name">—</h2>
+          <p id="thai-ws-desc">—</p>
+        </div>
+      </div>
+    </div>
+    <div class="thai-ws-body" id="thai-ws-body"></div>
+  </section>
+
+</main>
+
+<!-- ========== PWA Install Banner ========== -->
+<div class="install-banner" id="install-banner" role="complementary">
+  <div class="install-banner-icon">⬇️</div>
+  <div class="install-banner-text">
+    <strong>ติดตั้งเทพซ่า 007</strong>
+    <span>บันทึกลงมือถือ</span>
+  </div>
+  <div class="install-banner-actions">
+    <button class="btn-install" id="btn-install-pwa">ติดตั้ง</button>
+    <button class="btn-dismiss" id="btn-dismiss-pwa" aria-label="ปิด">✕</button>
+  </div>
+</div>
+
+<script src="../js/app.js"></script>
+<script src="../js/models.js"></script>
+<script src="../js/thai.js"></script>
+</body>
+</html>

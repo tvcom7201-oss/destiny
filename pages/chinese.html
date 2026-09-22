@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ดูดวงจีน — เทพซ่า 007</title>
+  <meta name="description" content="ดูดวงจีน ปาจื้อ 4 เสาชะตา 5 ธาตุ วัยจร 10 ปี และดวงรายปี วิเคราะห์ด้วย AI" />
+  <meta name="theme-color" content="#7c3aed" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="manifest" href="../manifest.json" />
+  <link rel="apple-touch-icon" href="../icons/icon-192.png" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+<div class="stars-bg"></div>
+<div class="nebula-orbs">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<!-- ========== Navbar ========== -->
+<nav class="navbar" role="navigation" aria-label="เมนูนำทาง">
+  <div style="display:flex; align-items:center; gap:0.75rem;">
+    <a href="../index.html" class="btn-back" aria-label="กลับหน้าแรก">← กลับ</a>
+    <span class="navbar-sep" style="color:var(--text-muted); font-size:0.85rem;">|</span>
+    <span class="navbar-logo" style="cursor:default;">
+      <span style="font-size:1.25rem;">🐉</span>
+      <span class="logo-text" style="font-size:0.95rem;">ดูดวงจีน</span>
+    </span>
+  </div>
+  <div class="navbar-actions">
+    <button class="btn-icon" id="btn-settings" aria-label="การตั้งค่า" title="การตั้งค่า">⚙️</button>
+  </div>
+</nav>
+
+<!-- ========== Settings Panel (shared component) ========== -->
+<div class="settings-overlay" id="settings-overlay" role="dialog" aria-modal="true" aria-labelledby="settings-title"></div>
+<aside class="settings-panel" id="settings-panel">
+  <div class="settings-header">
+    <h2 id="settings-title">⚙️ การตั้งค่า</h2>
+    <button class="btn-icon" id="btn-settings-close" aria-label="ปิด">✕</button>
+  </div>
+  <div class="settings-body">
+    <div class="settings-section">
+      <label for="setting-api-key">🔑 Gemini API Key</label>
+      <div class="input-group">
+        <input type="password" id="setting-api-key" placeholder="AIzaSy..." autocomplete="off" spellcheck="false" />
+        <button class="input-toggle-eye" id="toggle-eye" aria-label="แสดง/ซ่อน">👁</button>
+      </div>
+      <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" class="settings-link">
+        🔗 รับ API Key ฟรีที่ Google AI Studio →
+      </a>
+    </div>
+    <div class="settings-divider"></div>
+    <div class="settings-section">
+      <label for="setting-voice">🔊 โมเดลเสียงอ่าน</label>
+      <div class="settings-select-wrapper">
+        <select id="setting-voice" aria-label="เลือกเสียงอ่าน">
+          <option value="auto">✨ อัตโนมัติ — เสียงธรรมชาติ (แนะนำ)</option>
+        </select>
+      </div>
+      <div class="settings-hint">แสดงเฉพาะเสียงภาษาไทยที่ติดตั้งอยู่ใน Microsoft Edge หรือระบบของคุณ</div>
+    </div>
+    <div class="settings-divider"></div>
+    <div class="settings-section">
+      <label for="setting-model">🤖 เลือกโมเดล AI</label>
+      <div class="settings-select-wrapper">
+        <select id="setting-model" aria-label="เลือกโมเดล Gemini">
+          <option value="models/gemini-2.5-flash">✨ Gemini 2.5 Flash</option>
+        </select>
+      </div>
+      <div id="model-status" class="model-status" style="display:none;"></div>
+      <button
+        type="button"
+        style="margin-top:0.5rem; width:100%; padding:0.5rem; border-radius:8px; border:1px solid var(--border-glass); background:var(--bg-glass); color:var(--text-secondary); font-family:Sarabun,sans-serif; font-size:0.82rem; cursor:pointer;"
+        id="btn-refresh-models"
+        onclick="(function(){
+          const key=document.getElementById('setting-api-key').value.trim()||window.Store.get(window.STORAGE.API_KEY,'');
+          if(!key){window.showToast('กรุณาใส่ API Key ก่อน','error');return;}
+          const el=document.getElementById('model-status');el.style.display='block';
+          window.modelManager.fetchModels(key,true);
+        })()">
+        🔄 โหลดโมเดลใหม่จาก API
+      </button>
+    </div>
+    <div class="settings-divider"></div>
+    <div class="settings-section">
+      <label>ℹ️ ข้อมูล</label>
+      <div style="font-size:0.82rem; color:var(--text-muted); line-height:1.7;">
+        ข้อมูลเกิดและผลคำทำนายทั้งหมดถูกคำนวณและบันทึกไว้ในเครื่องของคุณเอง (LocalStorage) ไม่มีการส่งไปที่อื่นนอกจาก Google Gemini API
+      </div>
+    </div>
+  </div>
+  <div class="settings-footer">
+    <button class="btn-save" id="btn-save-settings">💾 บันทึก</button>
+    <button class="btn-clear-data" id="btn-clear-data">🗑️ ล้างทั้งหมด</button>
+  </div>
+</aside>
+
+<!-- ========== Page ========== -->
+<main class="astro-wrapper">
+
+  <header class="astro-hero">
+    <div class="astro-hero-icon">☯️</div>
+    <h1>ดูดวงจีน</h1>
+    <p>ปาจื้อ 四柱八字 · ถอดรหัส 4 เสาชะตา · 5 ธาตุ · วัยจร 10 ปี</p>
+  </header>
+
+  <div class="astro-key-warning" id="cn-key-warning" style="display:none;">
+    🔑 ยังไม่ได้ใส่ API Key — กด ⚙️ มุมขวาบนเพื่อใส่ก่อนใช้งาน
+  </div>
+
+  <!-- ฟอร์มข้อมูลเกิด -->
+  <div id="cn-form-slot"></div>
+
+  <button class="astro-cta" id="cn-run" type="button">☯️ เปิดดวงจีน</button>
+
+  <!-- ผลคำนวณ (โชว์ทันที ไม่ต้องรอ AI) -->
+  <section id="cn-panel" hidden></section>
+
+  <!-- คำทำนายจาก AI -->
+  <section id="cn-result" style="margin-top:1.25rem;"></section>
+
+  <section class="cn-note-card">
+    <h3>📖 วิธีอ่านดวงจีนแบบย่อ</h3>
+    <ul>
+      <li><strong>เสาปีเกิด (เสาภายนอก)</strong> — ภาพลักษณ์ สังคม เพื่อนฝูง บรรพบุรุษ และการพบเจอผู้คนใหม่ ๆ</li>
+      <li><strong>เสาเดือนเกิด (เสาการงาน)</strong> — หน้าที่การงาน ความถนัด สภาพแวดล้อมในการทำงาน และความสัมพันธ์กับพ่อแม่</li>
+      <li><strong>เสาวันเกิด (เสาตัวตน)</strong> — ตัวตนที่แท้จริงหรือ “ธาตุเจ้าชะตา” รวมถึงคู่ครองและความรัก</li>
+      <li><strong>เสาเวลาเกิด (เสาอนาคต)</strong> — โปรเจกต์ในอนาคต ความลับ ความคิดในใจ บุตร และบริวาร</li>
+    </ul>
+    <p>ดวงจีนเชื่อว่า “ดวงดีไม่เท่ามาถูกเวลา” จึงต้องดูวัยจร (จังหวะทุก 10 ปี) และดวงรายปีควบคู่กัน</p>
+  </section>
+
+</main>
+
+<!-- ========== PWA Install Banner ========== -->
+<div class="install-banner" id="install-banner" role="complementary">
+  <div class="install-banner-icon">⬇️</div>
+  <div class="install-banner-text">
+    <strong>ติดตั้งเทพซ่า 007</strong>
+    <span>บันทึกลงมือถือ</span>
+  </div>
+  <div class="install-banner-actions">
+    <button class="btn-install" id="btn-install-pwa">ติดตั้ง</button>
+    <button class="btn-dismiss" id="btn-dismiss-pwa" aria-label="ปิด">✕</button>
+  </div>
+</div>
+
+<script src="../js/app.js"></script>
+<script src="../js/models.js"></script>
+<script src="../js/chinese.js"></script>
+</body>
+</html>

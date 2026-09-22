@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ตีเลขจากความฝัน — เทพซ่า 007</title>
+  <meta name="description" content="เล่าความฝันให้ AI วิเคราะห์และตีออกมาเป็นเลขนำโชค 2 ตัว 3 ตัว 6 ตัว ตามหลักไสยศาสตร์ไทย" />
+  <meta name="theme-color" content="#7c3aed" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="manifest" href="../manifest.json" />
+  <link rel="apple-touch-icon" href="../icons/icon-192.png" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+<div class="stars-bg"></div>
+<div class="nebula-orbs">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<!-- ========== Navbar ========== -->
+<nav class="navbar" role="navigation" aria-label="เมนูนำทาง">
+  <div style="display:flex; align-items:center; gap:0.75rem;">
+    <button class="btn-icon" id="btn-sidebar-toggle" aria-label="ประวัติการสนทนา" title="ประวัติการสนทนา">☰</button>
+    <a href="../index.html" class="btn-back" aria-label="กลับหน้าแรก">← กลับ</a>
+    <span class="navbar-sep" style="color:var(--text-muted); font-size:0.85rem;">|</span>
+    <span class="navbar-logo" style="cursor:default;">
+      <span style="font-size:1.25rem;">🌙</span>
+      <span class="logo-text" style="font-size:0.95rem;">ตีเลขจากความฝัน</span>
+    </span>
+  </div>
+  <div class="navbar-actions">
+    <button class="btn-icon" id="btn-settings" aria-label="การตั้งค่า" title="การตั้งค่า">⚙️</button>
+  </div>
+</nav>
+
+<!-- ========== Chat History Sidebar ========== -->
+<div class="chat-sidebar-overlay" id="sidebar-overlay"></div>
+<aside class="chat-sidebar" id="chat-sidebar" role="navigation" aria-label="ประวัติการสนทนา">
+  <div class="sidebar-head">
+    <span class="sidebar-head-title">💬 ประวัติการสนทนา</span>
+    <button class="btn-icon sidebar-close" id="btn-sidebar-close" aria-label="ปิดแถบประวัติ">✕</button>
+  </div>
+  <button class="sidebar-new" id="btn-new-chat" type="button">
+    <span class="sidebar-new-icon">✚</span> เริ่มความฝันใหม่
+  </button>
+  <div class="sidebar-list" id="sidebar-list" role="list"></div>
+  <div class="sidebar-foot">💾 บันทึกไว้ในเครื่องของคุณอัตโนมัติ</div>
+</aside>
+
+<!-- ========== Conversation Context Menu ========== -->
+<div class="chat-context-menu" id="chat-context-menu" role="menu" aria-hidden="true">
+  <button class="ctx-item" data-action="rename" role="menuitem" type="button">✏️ เปลี่ยนชื่อ</button>
+  <button class="ctx-item" data-action="tag" role="menuitem" type="button">🏷️ ตั้งแท็ก</button>
+  <div class="ctx-divider"></div>
+  <button class="ctx-item danger" data-action="delete" role="menuitem" type="button">🗑️ ลบประวัตินี้</button>
+</div>
+
+<!-- ========== Rename / Tag Modal ========== -->
+<div class="chat-modal-overlay" id="chat-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="chat-modal-title">
+  <div class="chat-modal">
+    <h3 id="chat-modal-title">เปลี่ยนชื่อประวัติ</h3>
+    <input type="text" id="chat-modal-input" autocomplete="off" spellcheck="false" />
+    <p class="chat-modal-hint" id="chat-modal-hint" style="display:none;"></p>
+    <div class="chat-modal-actions">
+      <button class="chat-modal-btn" id="chat-modal-cancel" type="button">ยกเลิก</button>
+      <button class="chat-modal-btn primary" id="chat-modal-ok" type="button">บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- Settings Panel (shared component) -->
+<div class="settings-overlay" id="settings-overlay" role="dialog" aria-modal="true" aria-labelledby="settings-title"></div>
+<aside class="settings-panel" id="settings-panel">
+  <div class="settings-header">
+    <h2 id="settings-title">⚙️ การตั้งค่า</h2>
+    <button class="btn-icon" id="btn-settings-close" aria-label="ปิด">✕</button>
+  </div>
+  <div class="settings-body">
+    <div class="settings-section">
+      <label for="setting-api-key">🔑 Gemini API Key</label>
+      <div class="input-group">
+        <input type="password" id="setting-api-key" placeholder="AIzaSy..." autocomplete="off" spellcheck="false" />
+        <button class="input-toggle-eye" id="toggle-eye" aria-label="แสดง/ซ่อน">👁</button>
+      </div>
+      <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" class="settings-link">
+        🔗 รับ API Key ฟรีที่ Google AI Studio →
+      </a>
+    </div>
+    <div class="settings-divider"></div>
+    <div class="settings-section">
+      <label for="setting-voice">🔊 โมเดลเสียงอ่าน</label>
+      <div class="settings-select-wrapper">
+        <select id="setting-voice" aria-label="เลือกเสียงอ่าน">
+          <option value="auto">✨ อัตโนมัติ — เสียงธรรมชาติ (แนะนำ)</option>
+        </select>
+      </div>
+      <div class="settings-hint">แสดงเฉพาะเสียงภาษาไทยที่ติดตั้งอยู่ใน Microsoft Edge หรือระบบของคุณ</div>
+    </div>
+    <div class="settings-divider"></div>
+    <div class="settings-section">
+      <label for="setting-model">🤖 เลือกโมเดล AI</label>
+      <div class="settings-select-wrapper">
+        <select id="setting-model" aria-label="เลือกโมเดล Gemini">
+          <option value="models/gemini-2.5-flash">✨ Gemini 2.5 Flash</option>
+        </select>
+      </div>
+      <div id="model-status" class="model-status" style="display:none;"></div>
+      <button
+        type="button"
+        style="margin-top:0.5rem; width:100%; padding:0.5rem; border-radius:8px; border:1px solid var(--border-glass); background:var(--bg-glass); color:var(--text-secondary); font-family:Sarabun,sans-serif; font-size:0.82rem; cursor:pointer;"
+        id="btn-refresh-models"
+        onclick="(function(){
+          const key=document.getElementById('setting-api-key').value.trim()||window.Store.get(window.STORAGE.API_KEY,'');
+          if(!key){window.showToast('กรุณาใส่ API Key ก่อน','error');return;}
+          const el=document.getElementById('model-status');el.style.display='block';
+          window.modelManager.fetchModels(key,true);
+        })()">
+        🔄 โหลดโมเดลใหม่จาก API
+      </button>
+    </div>
+  </div>
+  <div class="settings-footer">
+    <button class="btn-save" id="btn-save-settings">💾 บันทึก</button>
+    <button class="btn-clear-data" id="btn-clear-data">🗑️ ล้างทั้งหมด</button>
+  </div>
+</aside>
+
+<!-- ========== Chat Container ========== -->
+<div class="chat-container" role="main">
+
+  <!-- Chat Header -->
+  <header class="chat-header">
+    <div class="chat-header-icon">🌙</div>
+    <div class="chat-header-text">
+      <h1>ตีเลขจากความฝัน</h1>
+      <p>เล่าความฝัน → รับเลขนำโชคตามหลักไสยศาสตร์ไทย</p>
+    </div>
+  </header>
+
+  <!-- No API Key Warning -->
+  <div id="no-api-dream" class="no-api-warning" style="display:none; margin:1rem 1.5rem;">
+    <div class="icon">🔑</div>
+    <h3>ต้องการ API Key</h3>
+    <p>กด ⚙️ มุมขวาบน เพื่อใส่ Gemini API Key ก่อนเริ่มใช้งาน</p>
+  </div>
+
+  <!-- Messages Area -->
+  <div class="chat-messages" id="chat-messages" role="log" aria-live="polite" aria-label="บทสนทนา">
+    <!-- Messages rendered by JS -->
+  </div>
+
+  <!-- Input Area -->
+  <div class="chat-input-area">
+    <div class="chat-input-row">
+      <div class="chat-input-wrapper">
+        <textarea
+          id="dream-input"
+          class="chat-textarea"
+          rows="1"
+          placeholder="เล่าความฝันของคุณ... เช่น 'ฝันเห็นงูใหญ่กัดขา วิ่งหนีแล้วหกล้ม'"
+          aria-label="พิมพ์ความฝัน"
+        ></textarea>
+      </div>
+      <button class="btn-mic" id="btn-mic" aria-label="พิมพ์ด้วยเสียง" title="พิมพ์ด้วยเสียง">🎤</button>
+      <button class="btn-send" id="btn-send-dream" aria-label="ส่ง">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- PWA Install Banner -->
+<div class="install-banner" id="install-banner" role="complementary">
+  <div class="install-banner-icon">⬇️</div>
+  <div class="install-banner-text">
+    <strong>ติดตั้งเทพซ่า 007</strong>
+    <span>บันทึกลงมือถือ</span>
+  </div>
+  <div class="install-banner-actions">
+    <button class="btn-install" id="btn-install-pwa">ติดตั้ง</button>
+    <button class="btn-dismiss" id="btn-dismiss-pwa" aria-label="ปิด">✕</button>
+  </div>
+</div>
+
+<script src="../js/app.js"></script>
+<script src="../js/models.js"></script>
+<script src="../js/dream.js"></script>
+</body>
+</html>

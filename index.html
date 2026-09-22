@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>เทพซ่า 007 — ดูดวงด้วย AI Gemini</title>
+  <meta name="description" content="เทพซ่า 007 — ดูดวง ตีเลขจากความฝัน ไพ่ทาโรต์ ไพ่ยิปซี และไสยศาสตร์หลากหลาย ด้วยพลัง AI Gemini" />
+  <meta name="theme-color" content="#7c3aed" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="เทพซ่า 007" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+
+  <!-- Open Graph -->
+  <meta property="og:title"       content="เทพซ่า 007 — ดูดวงด้วย AI" />
+  <meta property="og:description" content="ดูดวง ตีเลขฝัน ไพ่ทาโรต์ ไสยศาสตร์ครบครัน" />
+  <meta property="og:type"        content="website" />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ========== Background ========== -->
+<div class="stars-bg"></div>
+<div class="nebula-orbs">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<!-- ========== Navbar ========== -->
+<nav class="navbar" role="navigation" aria-label="เมนูหลัก">
+  <a href="index.html" class="navbar-logo" aria-label="หน้าแรก">
+    <span class="logo-icon">☸️</span>
+    <span class="logo-text">เทพซ่า 007</span>
+  </a>
+  <div class="navbar-actions">
+    <button class="btn-icon" id="btn-settings" aria-label="การตั้งค่า" title="การตั้งค่า">⚙️</button>
+  </div>
+</nav>
+
+<!-- ========== Settings Overlay ========== -->
+<div class="settings-overlay" id="settings-overlay" role="dialog" aria-modal="true" aria-labelledby="settings-title"></div>
+<aside class="settings-panel" id="settings-panel">
+  <div class="settings-header">
+    <h2 id="settings-title">⚙️ การตั้งค่า</h2>
+    <button class="btn-icon" id="btn-settings-close" aria-label="ปิด">✕</button>
+  </div>
+  <div class="settings-body">
+
+    <!-- API Key -->
+    <div class="settings-section">
+      <label for="setting-api-key">🔑 Gemini API Key</label>
+      <div class="input-group">
+        <input type="password" id="setting-api-key" placeholder="AIzaSy..." autocomplete="off" spellcheck="false" />
+        <button class="input-toggle-eye" id="toggle-eye" aria-label="แสดง/ซ่อน API Key">👁</button>
+      </div>
+      <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" class="settings-link">
+        🔗 รับ API Key ฟรีที่ Google AI Studio →
+      </a>
+    </div>
+
+    <div class="settings-divider"></div>
+
+    <!-- Model Selection -->
+    <div class="settings-section">
+      <label for="setting-model">🤖 เลือกโมเดล AI</label>
+      <div class="settings-select-wrapper">
+        <select id="setting-model" aria-label="เลือกโมเดล Gemini">
+          <option value="models/gemini-2.5-flash">✨ Gemini 2.5 Flash</option>
+        </select>
+      </div>
+      <div id="model-status" class="model-status" style="display:none;"></div>
+      <button
+        type="button"
+        style="margin-top:0.5rem; width:100%; padding:0.5rem; border-radius:8px; border:1px solid var(--border-glass); background:var(--bg-glass); color:var(--text-secondary); font-family:Sarabun,sans-serif; font-size:0.82rem; cursor:pointer;"
+        id="btn-refresh-models"
+        onclick="(function(){
+          const key=document.getElementById('setting-api-key').value.trim()||window.Store.get(window.STORAGE.API_KEY,'');
+          if(!key){window.showToast('กรุณาใส่ API Key ก่อน','error');return;}
+          const el=document.getElementById('model-status');el.style.display='block';
+          window.modelManager.fetchModels(key,true);
+        })()">
+        🔄 โหลดโมเดลใหม่จาก API
+      </button>
+    </div>
+
+    <div class="settings-divider"></div>
+
+    <!-- Voice Selection -->
+    <div class="settings-section">
+      <label for="setting-voice">🔊 โมเดลเสียงอ่าน</label>
+      <div class="settings-select-wrapper">
+        <select id="setting-voice" aria-label="เลือกเสียงอ่าน">
+          <option value="auto">✨ อัตโนมัติ — เสียงธรรมชาติ (แนะนำ)</option>
+        </select>
+      </div>
+      <div class="settings-hint">แสดงเฉพาะเสียงภาษาไทยที่ติดตั้งอยู่ใน Microsoft Edge หรือระบบของคุณ</div>
+    </div>
+
+    <div class="settings-divider"></div>
+
+    <!-- Info -->
+    <div class="settings-section">
+      <label>ℹ️ ข้อมูล</label>
+      <div style="font-size:0.82rem; color:var(--text-muted); line-height:1.7;">
+        ข้อมูลทั้งหมด (API Key, ประวัติ, ผลไพ่) บันทึกในเครื่องของคุณเท่านั้น ไม่มีการส่งข้อมูลไปยังเซิร์ฟเวอร์ใดๆ นอกจาก Google Gemini API
+      </div>
+    </div>
+
+  </div>
+  <div class="settings-footer">
+    <button class="btn-save" id="btn-save-settings">💾 บันทึก</button>
+    <button class="btn-clear-data" id="btn-clear-data">🗑️ ล้างทั้งหมด</button>
+  </div>
+</aside>
+
+<!-- ========== Page Wrapper ========== -->
+<main class="page-wrapper">
+
+  <!-- Hero -->
+  <section class="hero" aria-labelledby="hero-title">
+    <h1 class="hero-title" id="hero-title">เทพซ่า 007</h1>
+    <div class="hero-title-sub">TEPSA 007</div>
+    <p class="hero-desc">
+      ดูดวง ตีเลขจากความฝัน ไพ่ทาโรต์ และไสยศาสตร์หลากหลายสาย<br>
+      ทุกคำทำนายขับเคลื่อนโดยปัญญาประดิษฐ์ Gemini
+    </p>
+    <div class="hero-divider">
+      <div class="hero-divider-icon">🔮</div>
+    </div>
+  </section>
+
+  <!-- Features Grid -->
+  <section class="features-section" aria-labelledby="features-heading">
+    <h2 class="features-title" id="features-heading">✦ เลือกศาสตร์ที่ต้องการ ✦</h2>
+    <div class="features-grid" role="list">
+
+      <!-- Feature 1: Dream -->
+      <a href="pages/dream.html" class="feature-card active" role="listitem" style="--glow-color:rgba(124,58,237,0.35); --glow-border:#7c3aed;">
+        <div class="feature-badge badge-new">พร้อมใช้</div>
+        <span class="feature-icon">🌙</span>
+        <div class="feature-title">ตีเลขจากความฝัน</div>
+        <div class="feature-desc">เล่าความฝันให้ AI ฟัง แล้วรับเลขนำโชค 2 ตัว 3 ตัว 6 ตัว ตามหลักตำราไทยโบราณ</div>
+      </a>
+
+      <!-- Feature 2: Tarot -->
+      <a href="pages/tarot.html" class="feature-card active-gold" role="listitem" style="--glow-color:rgba(245,158,11,0.35); --glow-border:#f59e0b;">
+        <div class="feature-badge badge-new">พร้อมใช้</div>
+        <img class="feature-icon feature-icon-image" src="icons_1/128.png" alt="ไอคอนไพ่ทาโรต์" />
+        <div class="feature-title">ไพ่ทาโรต์ & ไพ่ยิปซี</div>
+        <div class="feature-desc">สับไพ่ ตัดไพ่ เลือก 3 ใบ แล้วรับคำทำนายจาก AI วันละ 1 ครั้ง ไพ่ครบ 78 ใบ</div>
+      </a>
+
+      <!-- Feature 3: Thai -->
+      <a href="pages/thai.html" class="feature-card active-pink" role="listitem" style="--glow-color:rgba(236,72,153,0.3); --glow-border:#ec4899;">
+        <div class="feature-badge badge-new">พร้อมใช้</div>
+        <span class="feature-icon">🐘</span>
+        <div class="feature-title">ไสยศาสตร์ไทย</div>
+        <div class="feature-desc">ดูดวงคอขาด ถามดวงกับหมอดู AI และวิเคราะห์ตามตำราโบราณ พรหมชาติ กราฟชีวิต ทักษา</div>
+      </a>
+
+      <!-- Feature 4: Chinese -->
+      <a href="pages/chinese.html" class="feature-card active-red" role="listitem" style="--glow-color:rgba(239,68,68,0.3); --glow-border:#ef4444;">
+        <div class="feature-badge badge-new">พร้อมใช้</div>
+        <span class="feature-icon">🐉</span>
+        <div class="feature-title">ดูดวงจีน</div>
+        <div class="feature-desc">ปาจื้อ 4 เสาชะตา 5 ธาตุ วัยจร 10 ปี และดวงรายปี วิเคราะห์ด้วย AI</div>
+      </a>
+
+      <!-- Feature 5: India -->
+      <div class="feature-card coming-soon" role="listitem">
+        <div class="feature-badge badge-soon">เร็วๆ นี้</div>
+        <span class="feature-icon">🌺</span>
+        <div class="feature-title">ไสยศาสตร์อินเดีย</div>
+        <div class="feature-desc">โหราศาสตร์เวทมนตร์ จักระ มันตรา ดวงชะตาตามคัมภีร์เวท</div>
+      </div>
+
+      <!-- Feature 6: Europe -->
+      <div class="feature-card coming-soon" role="listitem">
+        <div class="feature-badge badge-soon">เร็วๆ นี้</div>
+        <span class="feature-icon">🔮</span>
+        <div class="feature-title">ดูดวงยุโรป</div>
+        <div class="feature-desc">ลูกแก้ว คริสตัล หมอดูยิปซี เมทาฟิสิกส์ และโหราศาสตร์ตะวันตก</div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- ========== PWA Install Banner ========== -->
+<div class="install-banner" id="install-banner" role="complementary" aria-label="ติดตั้งแอป">
+  <div class="install-banner-icon">⬇️</div>
+  <div class="install-banner-text">
+    <strong>ติดตั้งเทพซ่า 007</strong>
+    <span>บันทึกลงมือถือเพื่อใช้ได้ตลอด</span>
+  </div>
+  <div class="install-banner-actions">
+    <button class="btn-install" id="btn-install-pwa">ติดตั้ง</button>
+    <button class="btn-dismiss" id="btn-dismiss-pwa" aria-label="ปิด">✕</button>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+<script src="js/models.js"></script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ไพ่ทาโรต์ & ไพ่ยิปซี — เทพซ่า 007</title>
+  <meta name="description" content="สับไพ่ ตัดไพ่ เลือก 3 ใบ รับคำทำนายจาก AI Gemini ไพ่ทาโรต์ครบ 78 ใบ วันละ 1 ครั้ง" />
+  <meta name="theme-color" content="#f59e0b" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="manifest" href="../manifest.json" />
+  <link rel="apple-touch-icon" href="../icons/icon-192.png" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+<div class="stars-bg"></div>
+<div class="nebula-orbs">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<!-- ========== Navbar ========== -->
+<nav class="navbar" role="navigation" aria-label="เมนูนำทาง">
+  <div style="display:flex; align-items:center; gap:0.75rem;">
+    <a href="../index.html" class="btn-back" aria-label="กลับหน้าแรก">← กลับ</a>
+    <span style="color:var(--text-muted); font-size:0.85rem;">|</span>
+    <span class="navbar-logo" style="cursor:default;">
+      <span style="font-size:1.25rem;">🃏</span>
+      <span class="logo-text" style="font-size:0.95rem;">ไพ่ทาโรต์ & ไพ่ยิปซี</span>
+    </span>
+  </div>
+  <div class="navbar-actions">
+    <button class="btn-icon" id="btn-settings" aria-label="การตั้งค่า" title="การตั้งค่า">⚙️</button>
+  </div>
+</nav>
+
+<!-- Settings Panel -->
+<div class="settings-overlay" id="settings-overlay" role="dialog" aria-modal="true" aria-labelledby="settings-title"></div>
+<aside class="settings-panel" id="settings-panel">
+  <div class="settings-header">
+    <h2 id="settings-title">⚙️ การตั้งค่า</h2>
+    <button class="btn-icon" id="btn-settings-close" aria-label="ปิด">✕</button>
+  </div>
+  <div class="settings-body">
+    <div class="settings-section">
+      <label for="setting-api-key">🔑 Gemini API Key</label>
+      <div class="input-group">
+        <input type="password" id="setting-api-key" placeholder="AIzaSy..." autocomplete="off" spellcheck="false" />
+        <button class="input-toggle-eye" id="toggle-eye" aria-label="แสดง/ซ่อน">👁</button>
+      </div>
+      <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" class="settings-link">
+        🔗 รับ API Key ฟรีที่ Google AI Studio →
+      </a>
+    </div>
+    <div class="settings-divider"></div>
+    <div class="settings-section">
+      <label for="setting-model">🤖 เลือกโมเดล AI</label>
+      <div class="settings-select-wrapper">
+        <select id="setting-model" aria-label="เลือกโมเดล">
+          <option value="models/gemini-2.5-flash">✨ Gemini 2.5 Flash</option>
+        </select>
+      </div>
+      <div id="model-status" class="model-status" style="display:none;"></div>
+      <button
+        type="button"
+        style="margin-top:0.5rem; width:100%; padding:0.5rem; border-radius:8px; border:1px solid var(--border-glass); background:var(--bg-glass); color:var(--text-secondary); font-family:Sarabun,sans-serif; font-size:0.82rem; cursor:pointer;"
+        id="btn-refresh-models"
+        onclick="(function(){
+          const key=document.getElementById('setting-api-key').value.trim()||window.Store.get(window.STORAGE.API_KEY,'');
+          if(!key){window.showToast('กรุณาใส่ API Key ก่อน','error');return;}
+          const el=document.getElementById('model-status');el.style.display='block';
+          window.modelManager.fetchModels(key,true);
+        })()">
+        🔄 โหลดโมเดลใหม่จาก API
+      </button>
+    </div>
+    <div class="settings-divider"></div>
+    <div class="settings-section">
+      <label for="setting-voice">🔊 โมเดลเสียงอ่าน</label>
+      <div class="settings-select-wrapper">
+        <select id="setting-voice" aria-label="เลือกเสียงอ่าน">
+          <option value="auto">✨ อัตโนมัติ — เสียงธรรมชาติ (แนะนำ)</option>
+        </select>
+      </div>
+      <div class="settings-hint">แสดงเฉพาะเสียงภาษาไทยที่ติดตั้งอยู่ใน Microsoft Edge หรือระบบของคุณ</div>
+    </div>
+  </div>
+  <div class="settings-footer">
+    <button class="btn-save" id="btn-save-settings">💾 บันทึก</button>
+    <button class="btn-clear-data" id="btn-clear-data">🗑️ ล้างทั้งหมด</button>
+  </div>
+</aside>
+
+<!-- ========== Main Content ========== -->
+<main class="page-wrapper" role="main">
+<div class="tarot-container">
+
+  <!-- Header -->
+  <header class="tarot-header" aria-labelledby="tarot-title">
+    <h1 id="tarot-title">🃏 ไพ่ทาโรต์ & ไพ่ยิปซี</h1>
+    <p>สับไพ่ · ตัดไพ่ · เลือก 3 ใบ · รับคำทำนายจาก AI</p>
+  </header>
+
+  <!-- Daily Limit Notice -->
+  <div id="daily-limit-notice" style="display:none;" class="daily-limit-notice" role="status">
+    <div class="icon">🌙</div>
+    <p>คุณได้จับไพ่วันนี้แล้ว ผลการอ่านจะคงอยู่จนถึงเที่ยงคืน</p>
+    <div class="reset-time"></div>
+  </div>
+
+  <!-- ========== PHASE: DECK ========== -->
+  <section id="phase-deck" class="tarot-phase" aria-label="เตรียมไพ่">
+    <div class="deck-area">
+
+      <!-- Instructions -->
+      <div style="text-align:center; color:var(--text-muted); font-size:0.9rem; line-height:1.8; max-width:480px;">
+        <p>🌟 ก่อนจับไพ่ กรุณาผ่อนคลาย หายใจลึกๆ</p>
+        <p>ตั้งใจถามคำถามในใจที่ต้องการคำตอบ</p>
+        <p>จากนั้นกด <strong style="color:var(--gold-light);">สับไพ่</strong> → <strong style="color:var(--gold-light);">ตัดไพ่</strong> → <strong style="color:var(--gold-light);">เริ่มจับไพ่</strong></p>
+      </div>
+
+      <!-- Deck Visual -->
+      <div class="deck-visual" id="deck-visual" role="img" aria-label="กองไพ่">
+        <div class="deck-card-stack"></div>
+        <div class="deck-pattern">☯️</div>
+      </div>
+
+      <!-- Actions -->
+      <div class="deck-actions">
+        <button class="btn-gold" id="btn-shuffle" aria-label="สับไพ่">
+          🔀 สับไพ่
+        </button>
+        <button class="btn-gold" id="btn-cut" aria-label="ตัดไพ่">
+          ✂️ ตัดไพ่
+        </button>
+        <button class="btn-primary" id="btn-start-pick" aria-label="เริ่มจับไพ่">
+          🃏 เริ่มจับไพ่
+        </button>
+      </div>
+
+      <!-- Card count info -->
+      <div style="font-size:0.78rem; color:var(--text-muted); text-align:center;">
+        ไพ่ทาโรต์ Major Arcana 22 ใบ + Minor Arcana 56 ใบ = 78 ใบ
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PHASE: PICK ========== -->
+  <section id="phase-pick" class="tarot-phase" style="display:none;" aria-label="เลือกไพ่">
+    <div class="card-selection-area">
+      <div class="pick-prompt">
+        <p style="font-size:1rem; color:var(--text-secondary); margin-bottom:0.75rem;">
+          ✨ ตั้งใจถามคำถามในใจ แล้วเลือกไพ่ 3 ใบที่ใจโน้มเอียง
+        </p>
+        <div class="pick-count" role="status" aria-live="polite" aria-label="จำนวนไพ่ที่เลือก">
+          <div class="pick-dot" aria-label="ไพ่ใบที่ 1"></div>
+          <div class="pick-dot" aria-label="ไพ่ใบที่ 2"></div>
+          <div class="pick-dot" aria-label="ไพ่ใบที่ 3"></div>
+        </div>
+      </div>
+      <div class="cards-spread" id="cards-spread" role="group" aria-label="ไพ่ที่วาง"></div>
+      <p style="font-size:0.78rem; color:var(--text-muted); text-align:center; margin-top:0.5rem;">
+        กดเลือกไพ่ · ไพ่อาจออกกลับด้าน (Reversed)
+      </p>
+    </div>
+  </section>
+
+  <!-- ========== PHASE: RESULT ========== -->
+  <section id="phase-result" class="tarot-phase" style="display:none;" aria-label="ผลไพ่">
+
+    <div style="text-align:center; margin-bottom:1.5rem;">
+      <p style="color:var(--text-secondary); font-size:0.9rem;">🌙 ไพ่แห่งวันนี้ของคุณ</p>
+    </div>
+
+    <!-- Result Cards -->
+    <div class="result-cards" id="result-cards" role="list" aria-label="ไพ่ที่จับได้"></div>
+
+    <!-- Position Labels -->
+    <div style="display:flex; justify-content:center; gap:2rem; flex-wrap:wrap; margin-top:0.25rem; margin-bottom:1.5rem;">
+      <div style="text-align:center; font-size:0.75rem; color:var(--text-muted);">🕰 อดีต / รากเหง้า</div>
+      <div style="text-align:center; font-size:0.75rem; color:var(--text-muted);">⚡ ปัจจุบัน / สิ่งที่เผชิญ</div>
+      <div style="text-align:center; font-size:0.75rem; color:var(--text-muted);">🌟 อนาคต / ผลที่จะมาถึง</div>
+    </div>
+
+    <!-- AI Reading -->
+    <div id="tarot-reading-box" class="tarot-reading" style="display:none;" role="article" aria-label="คำทำนายจาก AI">
+      <h3>🔮 คำทำนายจากเทพซ่า</h3>
+      <div id="tarot-reading-text" class="tarot-reading-text"></div>
+    </div>
+
+    <!-- No API Warning -->
+    <div id="no-api-tarot" class="no-api-warning" style="display:none; margin-top:1rem;">
+      <div class="icon">🔑</div>
+      <h3>ต้องการ API Key</h3>
+      <p>กด ⚙️ มุมขวาบน เพื่อใส่ Gemini API Key เพื่อรับคำทำนาย</p>
+    </div>
+
+    <!-- Action buttons -->
+    <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-top:1.5rem;">
+      <button class="btn-primary" id="btn-new-reading" style="font-size:0.85rem; padding:0.6rem 1.25rem;">
+        🔄 จับไพ่ใหม่ (ล้างผลวันนี้)
+      </button>
+      <a href="../index.html" class="btn-gold" style="font-size:0.85rem; padding:0.6rem 1.25rem; text-decoration:none;">
+        🏠 กลับหน้าแรก
+      </a>
+    </div>
+
+  </section>
+
+</div>
+</main>
+
+<!-- PWA Install Banner -->
+<div class="install-banner" id="install-banner" role="complementary">
+  <div class="install-banner-icon">⬇️</div>
+  <div class="install-banner-text">
+    <strong>ติดตั้งเทพซ่า 007</strong>
+    <span>บันทึกลงมือถือ</span>
+  </div>
+  <div class="install-banner-actions">
+    <button class="btn-install" id="btn-install-pwa">ติดตั้ง</button>
+    <button class="btn-dismiss" id="btn-dismiss-pwa" aria-label="ปิด">✕</button>
+  </div>
+</div>
+
+<script src="../js/app.js"></script>
+<script src="../js/models.js"></script>
+<script src="../js/tarot.js"></script>
+</body>
+</html>
