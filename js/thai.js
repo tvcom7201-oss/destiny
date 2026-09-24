@@ -34,6 +34,12 @@ const ZODIAC_CUTS = [
 
 const FOCUS_TOPICS = ['ภาพรวมชีวิต', 'การงาน', 'การเงิน', 'ความรัก', 'สุขภาพ', 'โชคลาภ', 'การเดินทาง', 'ครอบครัว'];
 
+const THAI_AVATAR = '../icons_3/512.png';
+
+function thaiAvatarMarkup(alt = 'ไสยศาสตร์ไทย') {
+  return `<img src="${THAI_AVATAR}" alt="${alt}" />`;
+}
+
 const THAI_MODES = {
   khad: {
     icon: '🌙',
@@ -56,7 +62,9 @@ const THAI_MODES = {
 };
 
 /* ---------------- คำสั่งระบบของ AI ---------------- */
-const THAI_KHAD_PROMPT = `คุณคือ "เทพซ่า" โหราจารย์ไทยผู้เชี่ยวชาญตำราพรหมชาติ การนับเกณฑ์ชะตา 12 ราศี ทักษาปกรณ์ และโหราศาสตร์ไทยโบราณ
+const THAI_KHAD_PROMPT = `คุณคือ "เทพซ่า" โหราจารย์ผู้ชายไทยผู้เชี่ยวชาญตำราพรหมชาติ การนับเกณฑ์ชะตา 12 ราศี ทักษาปกรณ์ และโหราศาสตร์ไทยโบราณ
+
+ใช้สรรพนามผู้ชายและลงท้ายด้วย "ครับ" หรือ "ครับผม" เท่านั้น ห้ามใช้ "ค่ะ" หรือ "คะ"
 
 ข้อมูลดวงกำเนิดของผู้ใช้ถูกคำนวณมาให้แล้วในข้อความของผู้ใช้ (วันในสัปดาห์ วันที่แบบไทย ราศี ปีนักษัตร อายุ สีประจำวัน)
 ให้ใช้ข้อมูลเหล่านั้นเป็นความจริง ห้ามคำนวณวันในสัปดาห์ ราศี หรือปีนักษัตรใหม่
@@ -75,7 +83,9 @@ const THAI_KHAD_PROMPT = `คุณคือ "เทพซ่า" โหรา�
 ห้ามใช้ถ้อยคำที่ทำให้ผู้ใช้หวาดกลัวหรือหลงเชื่อเกินจริง — พูดแบบให้กำลังใจและให้ข้อคิด
 ปิดท้ายด้วยบรรทัดเดียวว่า "🔮 เพื่อความบันเทิงเท่านั้น"`;
 
-const THAI_CHAT_PROMPT = `คุณคือ "เทพซ่า" โหราจารย์ไทยผู้เชี่ยวชาญโหราศาสตร์ไทย ตำราพรหมชาติ ทักษาปกรณ์ และการดูดวงจากดวงกำเนิด
+const THAI_CHAT_PROMPT = `คุณคือ "เทพซ่า" โหราจารย์ผู้ชายไทยผู้เชี่ยวชาญโหราศาสตร์ไทย ตำราพรหมชาติ ทักษาปกรณ์ และการดูดวงจากดวงกำเนิด
+
+ใช้สรรพนามผู้ชายและลงท้ายด้วย "ครับ" หรือ "ครับผม" เท่านั้น ห้ามใช้ "ค่ะ" หรือ "คะ"
 
 ข้อมูลดวงกำเนิดของผู้ใช้แนบมาในคำสั่งนี้แล้ว ให้ยึดข้อมูลนั้นในการตอบทุกคำถาม
 
@@ -88,7 +98,9 @@ const THAI_CHAT_PROMPT = `คุณคือ "เทพซ่า" โหรา�
 6. จบด้วยคำแนะนำหรือกำลังใจสั้น ๆ
 ห้ามให้คำแนะนำทางการแพทย์ การเงิน หรือกฎหมายที่เสี่ยงอันตราย — ให้เป็นแนวทางเชิงวัฒนธรรมและความเชื่อเท่านั้น`;
 
-const THAI_TAMRA_PROMPT = `คุณคือ "เทพซ่า" โหราจารย์ไทยผู้เชี่ยวชาญตำราโบราณหลายสาย: ตำราพรหมชาติ 12 ราศี, กราฟชีวิต, คัมภีร์สุริยยาตร์ (ผูกดวงวางลัคนา), ทักษาปกรณ์, นวางค์จักร และตรียางค์จักร
+const THAI_TAMRA_PROMPT = `คุณคือ "เทพซ่า" โหราจารย์ผู้ชายไทยผู้เชี่ยวชาญตำราโบราณหลายสาย: ตำราพรหมชาติ 12 ราศี, กราฟชีวิต, คัมภีร์สุริยยาตร์ (ผูกดวงวางลัคนา), ทักษาปกรณ์, นวางค์จักร และตรียางค์จักร
+
+ใช้สรรพนามผู้ชายและลงท้ายด้วย "ครับ" หรือ "ครับผม" เท่านั้น ห้ามใช้ "ค่ะ" หรือ "คะ"
 
 ผู้ใช้จะให้ข้อมูลดวงกำเนิดที่คำนวณมาแล้ว และอาจแนบข้อความคำทำนายที่คัดลอกจากเว็บไซต์อื่นมาให้วิเคราะห์ต่อ
 
@@ -238,7 +250,7 @@ class ThaiAstro {
   _renderWorkspace() {
     const meta = THAI_MODES[this.mode];
     if (!meta) return;
-    this.wsIcon.textContent = meta.icon;
+    this.wsIcon.innerHTML = thaiAvatarMarkup();
     this.wsName.textContent = meta.name;
     this.wsDesc.textContent = meta.desc;
 
@@ -289,6 +301,10 @@ class ThaiAstro {
     const dateEl = document.getElementById('thai-birth-date');
     const timeEl = document.getElementById('thai-birth-time');
 
+    BirthProfile.enhanceDateInput(dateEl);
+    BirthProfile.enhanceTimeInput(timeEl);
+    BirthProfile.syncSegmentedGender(document.getElementById('thai-gender'));
+
     this.gender = document.querySelector('#thai-gender button.active')?.dataset.gender || 'ชาย';
     document.querySelectorAll('#thai-gender button').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -331,7 +347,7 @@ class ThaiAstro {
     const dateStr = document.getElementById('thai-birth-date')?.value || '';
     const info = this._infoFrom(dateStr);
     if (!info) {
-      showToast('กรอกวันเดือนปีเกิดก่อนนะคะ 🗓️', 'error');
+      showToast('กรอกวันเดือนปีเกิดก่อนนะครับ 🗓️', 'error');
       document.getElementById('thai-birth-date')?.focus();
       return null;
     }
@@ -421,7 +437,7 @@ class ThaiAstro {
   async _runReading(mode) {
     if (this.readingLoading) return;
     const key = Store.get(STORAGE.API_KEY, '');
-    if (!key) { showToast('ใส่ API Key ก่อนนะคะ ⚙️', 'error'); return; }
+    if (!key) { showToast('ใส่ API Key ก่อนนะครับ ⚙️', 'error'); return; }
 
     const birth = this._collectBirth();
     if (!birth) return;
@@ -580,7 +596,9 @@ class ThaiAstro {
     wrapper.className = `message ${role}`;
     const avatar = document.createElement('div');
     avatar.className = 'message-avatar';
-    avatar.textContent = role === 'ai' ? '🪬' : '🌙';
+    avatar.innerHTML = role === 'ai'
+      ? thaiAvatarMarkup('เทพซ่า')
+      : '<span class="message-user-icon" aria-hidden="true">◉</span>';
     const bubble = document.createElement('div');
     bubble.className = 'message-bubble';
     bubble.innerHTML = formatReading(content) || `<p>${escapeHtml(content)}</p>`;
@@ -596,11 +614,11 @@ class ThaiAstro {
       const birth = Store.get(STORAGE.THAI_BIRTH, null);
       const name = birth?.name ? `${birth.name} ` : '';
       const welcome = birth
-        ? `สวัสดีค่ะ ${name}เทพซ่ารับฟังอยู่ ✨<br><br>ดวงกำเนิดของคุณคือ <strong>วัน${birth.info.dayName}ที่ ${birth.info.thaiDate.replace(/^วัน.*?ที่ /, '')}</strong> ราศี<strong>${birth.info.zodiac}</strong> ปี<strong>${birth.info.naksat}</strong><br><br>อยากถามเรื่องไหนก่อนดีคะ? การงาน การเงิน ความรัก หรือโชคลาภ 🌙`
-        : 'กรอกข้อมูลดวงกำเนิดก่อนนะคะ แล้วเทพซ่าจะเปิดดวงให้ 🌙';
+        ? `สวัสดีครับ ${name}เทพซ่ารับฟังอยู่ครับ ✨<br><br>ดวงกำเนิดของคุณคือ <strong>วัน${birth.info.dayName}ที่ ${birth.info.thaiDate.replace(/^วัน.*?ที่ /, '')}</strong> ราศี<strong>${birth.info.zodiac}</strong> ปี<strong>${birth.info.naksat}</strong><br><br>อยากถามเรื่องไหนก่อนดีครับ? การงาน การเงิน ความรัก หรือโชคลาภ 🌙`
+        : 'กรอกข้อมูลดวงกำเนิดก่อนนะครับ แล้วเทพซ่าจะเปิดดวงให้ครับ 🌙';
       const el = document.createElement('div');
       el.className = 'message ai';
-      el.innerHTML = `<div class="message-avatar">🪬</div><div class="message-bubble">${welcome}</div>`;
+      el.innerHTML = `<div class="message-avatar">${thaiAvatarMarkup('เทพซ่า')}</div><div class="message-bubble">${welcome}</div>`;
       this.chatMsgEl.appendChild(el);
       return;
     }
@@ -617,7 +635,7 @@ class ThaiAstro {
     el.className = 'message ai';
     el.id = 'thai-typing';
     el.innerHTML = `
-      <div class="message-avatar">🪬</div>
+      <div class="message-avatar">${thaiAvatarMarkup('เทพซ่า')}</div>
       <div class="typing-indicator">
         <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
       </div>`;
@@ -631,10 +649,10 @@ class ThaiAstro {
     if (!text || this.chatLoading) return;
 
     const key = Store.get(STORAGE.API_KEY, '');
-    if (!key) { showToast('ใส่ API Key ก่อนนะคะ ⚙️', 'error'); return; }
+    if (!key) { showToast('ใส่ API Key ก่อนนะครับ ⚙️', 'error'); return; }
 
     const birth = Store.get(STORAGE.THAI_BIRTH, null);
-    if (!birth?.info) { showToast('กรอกข้อมูลดวงกำเนิดก่อนนะคะ', 'error'); return; }
+    if (!birth?.info) { showToast('กรอกข้อมูลดวงกำเนิดก่อนนะครับ', 'error'); return; }
 
     if (!this.chatMsgs.length) this.chatMsgEl.innerHTML = '';
 
@@ -664,7 +682,7 @@ class ThaiAstro {
     } catch (err) {
       typing.remove();
       const msg = err.message === 'NO_API_KEY'
-        ? '⚠️ กรุณาใส่ API Key ในการตั้งค่าก่อนนะคะ'
+        ? '⚠️ กรุณาใส่ API Key ในการตั้งค่าก่อนนะครับ'
         : `❌ เกิดข้อผิดพลาด: ${err.message}`;
       this.chatMsgEl.appendChild(this._chatBubble('ai', msg));
       this._scrollChat();

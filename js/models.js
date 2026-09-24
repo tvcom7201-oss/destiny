@@ -6,14 +6,14 @@
 
 // รายการโมเดลที่กำหนดไว้ 11 โมเดลตามคำขอของผู้ใช้
 const ALL_MODELS = [
-  { id: 'models/gemini-2.5-flash',              name: '⚡ Gemini 2.5 Flash',             badge: 'แนะนำ',  type: 'flash' },
+  { id: 'models/gemini-3.5-flash-lite',        name: '⚡ Gemini 3.5 Flash Lite',        badge: 'แนะนำ',  type: 'flash' },
+  { id: 'models/gemini-2.5-flash',              name: '⚡ Gemini 2.5 Flash',             badge: 'เสถียร',  type: 'flash' },
   { id: 'models/gemini-2.5-pro',                name: '🔥 Gemini 2.5 Pro',               badge: 'แม่นยำ', type: 'pro' },
   { id: 'models/gemini-2.5-flash-lite',         name: '⚡ Gemini 2.5 Flash-Lite',        badge: 'เบาเร็ว',type: 'flash' },
   { id: 'models/gemini-3-flash-preview',        name: '🌟 Gemini 3 Flash Preview',       badge: 'Preview',type: 'new' },
   { id: 'models/gemini-3.1-flash-lite-preview', name: '💫 Gemini 3.1 Flash Lite Preview',badge: 'Preview',type: 'new' },
   { id: 'models/gemini-3.1-flash-lite',         name: '⚡ Gemini 3.1 Flash Lite',        badge: 'เบาเร็ว',type: 'flash' },
   { id: 'models/gemini-3.5-flash',              name: '🚀 Gemini 3.5 Flash',             badge: 'รุ่นใหม่',type: 'new' },
-  { id: 'models/gemini-3.5-flash-lite',         name: '⚡ Gemini 3.5 Flash Lite',        badge: 'รุ่นใหม่',type: 'flash' },
   { id: 'models/gemini-3.6-flash',              name: '🚀 Gemini 3.6 Flash',             badge: 'รุ่นใหม่',type: 'new' },
   { id: 'models/gemini-3.7-flash',              name: '🚀 Gemini 3.7 Flash',             badge: 'รุ่นใหม่',type: 'new' },
   { id: 'models/gemini-3.8-flash',              name: '🚀 Gemini 3.8 Flash',             badge: 'ล่าสุด',  type: 'new' },
@@ -23,6 +23,12 @@ class ModelManager {
   constructor(selectEl) {
     this.selectEl = selectEl;
     this.models = ALL_MODELS;
+
+    // Upgrade the previous built-in default without changing a deliberate newer choice.
+    const savedModel = Store.get(STORAGE.MODEL, '');
+    if (!savedModel || savedModel === 'models/gemini-2.5-flash') {
+      Store.set(STORAGE.MODEL, DEFAULT_MODEL);
+    }
     
     // ล้างแคชเก่าที่อาจมีโมเดลขยะหลงเหลืออยู่
     Store.remove('tepsa_models_cache');
@@ -47,7 +53,7 @@ class ModelManager {
       container.innerHTML = `
         <div class="custom-select-trigger" id="custom-model-trigger" tabindex="0" role="button" aria-haspopup="listbox" aria-expanded="false">
           <div class="custom-select-label-wrap">
-            <span class="custom-select-label">⚡ Gemini 2.5 Flash</span>
+            <span class="custom-select-label">⚡ Gemini 3.5 Flash Lite</span>
           </div>
           <span class="custom-select-arrow">▾</span>
         </div>
@@ -94,14 +100,14 @@ class ModelManager {
   }
 
   _loadCurrentSelection() {
-    const saved = Store.get(STORAGE.MODEL, '') || this.selectEl.dataset.saved || 'models/gemini-2.5-flash';
+    const saved = Store.get(STORAGE.MODEL, '') || this.selectEl.dataset.saved || DEFAULT_MODEL;
     this.selectModel(saved);
   }
 
   _renderItems() {
     if (!this.selectEl || !this.dropdown) return;
 
-    const saved = Store.get(STORAGE.MODEL, '') || this.selectEl.dataset.saved || 'models/gemini-2.5-flash';
+    const saved = Store.get(STORAGE.MODEL, '') || this.selectEl.dataset.saved || DEFAULT_MODEL;
     let current = this.selectEl.value || saved;
 
     if (!ALL_MODELS.some(m => m.id === current)) {

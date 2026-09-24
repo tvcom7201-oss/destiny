@@ -153,7 +153,11 @@ body {
   text-decoration: none;
 }
 .navbar-logo .logo-icon {
-  font-size: 1.5rem;
+  display: block;
+  width: 33px;
+  height: 33px;
+  flex: 0 0 33px;
+  object-fit: contain;
   filter: drop-shadow(0 0 8px var(--gold-main));
   animation: rotateSlow 20s linear infinite;
 }
@@ -187,12 +191,34 @@ body {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
+.btn-icon img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
 .btn-icon:hover {
   border-color: var(--purple-main);
   background: var(--purple-glow);
   box-shadow: var(--shadow-purple);
   transform: scale(1.05);
 }
+#btn-settings {
+  border: 0;
+  background: transparent;
+  font-size: 2rem;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.settings-gear-icon {
+  display: inline-block;
+  animation: settingsSpin 4s linear infinite;
+}
+#btn-settings:hover {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+@keyframes settingsSpin { to { transform: rotate(360deg); } }
 .btn-back {
   display: inline-flex;
   align-items: center;
@@ -295,6 +321,62 @@ body {
 }
 .settings-panel.open { transform: translateX(0); }
 
+.api-guide-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 250;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(5px);
+}
+.api-guide-modal {
+  position: relative;
+  width: min(390px, 100%);
+  padding: 1.5rem;
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  background: linear-gradient(180deg, #17122b 0%, #0d0d1a 100%);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+  color: var(--text-primary);
+}
+.api-guide-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  border: 0;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+.api-guide-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+.api-guide-modal h2 { margin: 0 0 0.35rem; color: var(--gold-light); }
+.api-guide-modal p { margin: 0 0 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+.api-guide-modal ol { margin: 0 0 1rem 1.25rem; padding: 0; color: var(--text-secondary); line-height: 1.7; }
+.api-guide-link { display: inline-block; margin-bottom: 0.75rem; color: var(--purple-light); }
+.api-guide-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.06);
+  color: var(--text-primary);
+  font: inherit;
+}
+.api-guide-save, .api-guide-later {
+  width: 100%;
+  margin-top: 0.7rem;
+  padding: 0.65rem;
+  border-radius: var(--radius-sm);
+  font: inherit;
+  cursor: pointer;
+}
+.api-guide-save { border: 1px solid var(--gold-main); background: rgba(245,158,11,0.15); color: var(--gold-light); }
+.api-guide-later { border: 1px solid var(--border-glass); background: transparent; color: var(--text-muted); }
+
 .settings-header {
   display: flex;
   align-items: center;
@@ -304,10 +386,18 @@ body {
   background: rgba(124,58,237,0.08);
 }
 .settings-header h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
   font-family: 'Cinzel', serif;
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--gold-light);
+}
+.settings-title-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
 }
 .settings-body { flex: 1; overflow-y: auto; padding: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
 
@@ -348,6 +438,40 @@ select option {
   font-size: 0.95rem;
   padding: 0.75rem 1rem;
 }
+.sound-volume-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 3.2rem 2.4rem;
+  align-items: center;
+  gap: 0.6rem;
+}
+.sound-volume-row input[type="range"] {
+  width: 100%;
+  height: 0.35rem;
+  accent-color: var(--gold-main);
+  cursor: pointer;
+}
+.sound-volume-row output {
+  color: var(--gold-light);
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.sound-mute-btn {
+  width: 2.35rem;
+  height: 2.35rem;
+  border: 1px solid var(--border-glass);
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: var(--transition);
+}
+.sound-mute-btn:hover,
+.sound-mute-btn:focus-visible {
+  border-color: var(--gold-main);
+  background: rgba(245,158,11,0.14);
+  outline: none;
+}
 .input-group input[type="password"] { padding-right: 2.75rem; letter-spacing: 0.1em; }
 .input-group input:focus,
 .input-group select:focus,
@@ -382,12 +506,6 @@ select option {
   transition: color 0.2s;
 }
 .settings-link:hover { color: var(--gold-light); }
-
-.settings-hint {
-  color: var(--text-muted);
-  font-size: 0.78rem;
-  line-height: 1.5;
-}
 
 .settings-select-wrapper { position: relative; }
 
@@ -726,14 +844,6 @@ select option {
   background-clip: text;
   filter: drop-shadow(0 0 20px rgba(245,158,11,0.3));
 }
-.hero-title-sub {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(1rem, 3vw, 1.5rem);
-  font-weight: 400;
-  color: var(--text-secondary);
-  letter-spacing: 0.3em;
-  margin-bottom: 1.5rem;
-}
 .hero-desc {
   font-size: 1.05rem;
   color: var(--text-secondary);
@@ -756,7 +866,12 @@ select option {
   background: linear-gradient(90deg, transparent, var(--border-gold));
 }
 .hero-divider::after { background: linear-gradient(90deg, var(--border-gold), transparent); }
-.hero-divider-icon { color: var(--gold-main); font-size: 1.2rem; }
+.hero-divider-icon {
+  display: block;
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
 
 /* ---- Feature Grid ---- */
 .features-section {
@@ -841,6 +956,14 @@ select option {
   object-fit: cover;
   border-radius: var(--radius-sm);
 }
+.nav-feature-icon {
+  width: 2rem;
+  height: 2rem;
+  object-fit: cover;
+  border-radius: 6px;
+  display: block;
+  filter: drop-shadow(0 0 8px var(--gold-glow));
+}
 .feature-card:hover .feature-icon { transform: scale(1.15) rotate(-5deg); }
 
 .feature-title {
@@ -874,7 +997,15 @@ select option {
   align-items: center;
   gap: 1rem;
 }
-.chat-header-icon { font-size: 2rem; }
+.chat-header-icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: 0 0 2.75rem;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 1px solid var(--border-gold);
+  box-shadow: 0 0 14px var(--gold-glow);
+}
 .chat-header-text h1 { font-family: 'Cinzel', serif; font-size: 1.2rem; font-weight: 700; color: var(--gold-light); }
 .chat-header-text p { font-size: 0.82rem; color: var(--text-muted); }
 
@@ -912,6 +1043,15 @@ select option {
   flex-shrink: 0;
   border: 1px solid var(--border-glass);
 }
+.message-avatar img,
+.thai-ws-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+.message-user-icon { color: var(--gold-light); font-size: 1.15rem; line-height: 1; }
 .message.ai .message-avatar { background: rgba(124,58,237,0.2); }
 .message.user .message-avatar { background: rgba(245,158,11,0.15); }
 
@@ -1040,6 +1180,204 @@ select option {
   box-shadow: 0 0 0 3px rgba(124,58,237,0.1);
 }
 .chat-textarea::placeholder { color: var(--text-muted); }
+
+/* ---- Secret Abdul Chat ---- */
+.abdul-chat {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(390px, 100vw);
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, rgba(24,15,42,0.98), rgba(8,8,14,0.99));
+  border-left: 1px solid rgba(245,158,11,0.35);
+  box-shadow: -18px 0 55px rgba(0,0,0,0.5), -4px 0 25px rgba(124,58,237,0.18);
+  transform: translateX(105%);
+  transition: transform 0.35s cubic-bezier(0.23,1,0.32,1);
+}
+.abdul-chat.open { transform: translateX(0); }
+body.abdul-chat-open {
+  position: fixed;
+  left: 0;
+  right: 0;
+  width: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
+}
+.abdul-chat,
+.abdul-chat * { touch-action: auto; }
+.abdul-chat-header { display: flex; align-items: center; gap: 0.75rem; padding: 1rem; border-bottom: 1px solid rgba(245,158,11,0.2); background: rgba(124,58,237,0.12); }
+.abdul-avatar, .abdul-message-avatar { width: 46px; height: 46px; flex: 0 0 46px; object-fit: cover; object-position: center top; border-radius: 50%; border: 2px solid var(--gold-main); box-shadow: 0 0 16px rgba(245,158,11,0.35); }
+.abdul-chat-header h2 { color: var(--gold-light); font-size: 1.15rem; }
+.abdul-chat-header p { color: var(--text-muted); font-size: 0.78rem; }
+.abdul-chat-close { margin-left: auto; border: 0; background: transparent; color: var(--text-secondary); font-size: 1.8rem; cursor: pointer; line-height: 1; }
+.abdul-chat-messages { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 0.85rem; padding: 1rem; }
+.abdul-welcome { margin: auto 0; padding: 1rem; text-align: center; color: var(--text-muted); line-height: 1.8; }
+.abdul-message { 
+  display: flex; 
+  align-items: flex-end; 
+  gap: 0.5rem; 
+  animation: slideUpMsg 0.25s ease; 
+  user-select: none; 
+  -webkit-user-select: none; 
+  position: relative;
+  cursor: context-menu;
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s ease, max-height 0.25s ease, margin 0.25s ease;
+}
+.abdul-message.user { justify-content: flex-end; }
+.abdul-message-avatar { width: 30px; height: 30px; flex-basis: 30px; border-width: 1px; }
+.abdul-bubble { 
+  max-width: 78%; 
+  padding: 0.65rem 0.85rem; 
+  border-radius: 14px 14px 14px 3px; 
+  background: rgba(255,255,255,0.08); 
+  color: var(--text-primary); 
+  font-size: 0.9rem; 
+  line-height: 1.5; 
+  white-space: pre-wrap; 
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.abdul-message.user .abdul-bubble { 
+  border-radius: 14px 14px 3px 14px; 
+  background: linear-gradient(135deg, var(--purple-main), var(--purple-deep)); 
+}
+.abdul-message.menu-active .abdul-bubble {
+  box-shadow: 0 0 0 2px var(--gold-main), 0 0 18px rgba(245, 158, 11, 0.45);
+  transform: scale(1.02);
+}
+.abdul-message.deleting {
+  opacity: 0 !important;
+  transform: scale(0.8) translateY(10px) !important;
+  max-height: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Floating Context Menu for Abdul Chat */
+.abdul-context-menu {
+  position: absolute;
+  z-index: 350;
+  min-width: 140px;
+  background: rgba(20, 14, 36, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: 12px;
+  padding: 5px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7), 0 0 18px rgba(124, 58, 237, 0.25);
+  display: none;
+  flex-direction: column;
+  gap: 3px;
+  animation: abdulMenuPop 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: top left;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.abdul-context-menu.open {
+  display: flex;
+}
+@keyframes abdulMenuPop {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+.abdul-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 0;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 0.84rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+  outline: none;
+  font-family: inherit;
+}
+.abdul-menu-item svg {
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+.abdul-menu-item:hover,
+.abdul-menu-item:focus-visible {
+  background: rgba(255, 255, 255, 0.08);
+}
+.abdul-menu-item.abdul-action-copy:hover {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--gold-light);
+}
+.abdul-menu-item.abdul-action-delete {
+  color: #ff6b6b;
+}
+.abdul-menu-item.abdul-action-delete:hover {
+  background: rgba(239, 68, 68, 0.18);
+  color: #ff8585;
+}
+
+/* Toast Notification in Chat */
+.abdul-toast {
+  position: absolute;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px);
+  background: rgba(18, 12, 32, 0.96);
+  border: 1px solid var(--gold-main);
+  color: #fef08a;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.22s ease;
+  z-index: 360;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
+}
+.abdul-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Typing Indicator Animation */
+.abdul-typing-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px;
+  min-height: 20px;
+}
+.abdul-typing-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold-light);
+  opacity: 0.35;
+  animation: abdulDotBounce 1.2s infinite ease-in-out both;
+}
+.abdul-typing-dot:nth-child(1) { animation-delay: -0.32s; }
+.abdul-typing-dot:nth-child(2) { animation-delay: -0.16s; }
+.abdul-typing-dot:nth-child(3) { animation-delay: 0s; }
+@keyframes abdulDotBounce {
+  0%, 80%, 100% { transform: scale(0.65); opacity: 0.35; }
+  40% { transform: scale(1.15); opacity: 1; }
+}
+
+.abdul-chat-input-area { display: flex; align-items: flex-end; gap: 0.55rem; padding: 0.8rem; border-top: 1px solid var(--border-glass); background: rgba(10,10,15,0.9); }
+.abdul-chat-input-area textarea { flex: 1; min-height: 44px; max-height: 120px; resize: none; padding: 0.7rem 0.8rem; border: 1px solid var(--border-glass); border-radius: 12px; outline: none; background: rgba(255,255,255,0.05); color: var(--text-primary); font: inherit; }
+.abdul-chat-send { height: 44px; padding: 0 0.9rem; border: 0; border-radius: 12px; background: var(--gold-main); color: #1c1200; font-weight: 700; cursor: pointer; }
+.abdul-secret-trigger { cursor: pointer; }
+@media (max-width: 640px) { .abdul-chat { width: 100vw; } }
 .btn-send {
   width: 48px;
   height: 48px;
@@ -1060,26 +1398,71 @@ select option {
 .btn-send:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
 
-/* ---- Tarot Page ---- */
+/* ---- Tarot Page — Premium 3D Edition ---- */
 .tarot-container {
   max-width: 900px;
   margin: 0 auto;
   padding: 1.5rem;
   padding-top: calc(60px + 1.5rem);
   min-height: 100vh;
+  position: relative;
 }
+
+/* Ambient floating particles background for tarot page */
+.tarot-container::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(2px 2px at 20% 30%, rgba(245,158,11,0.4) 0%, transparent 100%),
+    radial-gradient(2px 2px at 80% 20%, rgba(167,139,250,0.4) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 60% 70%, rgba(236,72,153,0.3) 0%, transparent 100%),
+    radial-gradient(2px 2px at 40% 80%, rgba(245,158,11,0.3) 0%, transparent 100%);
+  animation: ambientFloat 12s ease-in-out infinite alternate;
+}
+@keyframes ambientFloat {
+  0%   { transform: translateY(0) scale(1); opacity: 0.5; }
+  50%  { transform: translateY(-10px) scale(1.02); opacity: 0.8; }
+  100% { transform: translateY(5px) scale(0.98); opacity: 0.6; }
+}
+
 .tarot-header {
   text-align: center;
   margin-bottom: 2rem;
+  position: relative;
+  z-index: 1;
 }
 .tarot-header h1 {
   font-family: 'Cinzel', serif;
   font-size: clamp(1.5rem, 5vw, 2.5rem);
   font-weight: 700;
-  background: linear-gradient(135deg, var(--gold-light), var(--purple-light));
+  background: linear-gradient(135deg, var(--gold-light), var(--purple-light), var(--gold-light));
+  background-size: 200% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  animation: shimmerTitle 4s ease-in-out infinite;
+  text-shadow: none;
+}
+@keyframes shimmerTitle {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+.tarot-title-icon {
+  width: 2.35rem;
+  height: 2.35rem;
+  vertical-align: -0.28em;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 1px solid var(--border-gold);
+  box-shadow: 0 0 12px var(--gold-glow), 0 0 24px rgba(245,158,11,0.15);
+  animation: iconPulse 3s ease-in-out infinite;
+}
+@keyframes iconPulse {
+  0%, 100% { box-shadow: 0 0 12px var(--gold-glow); }
+  50%      { box-shadow: 0 0 20px var(--gold-glow), 0 0 40px rgba(124,58,237,0.2); }
 }
 .tarot-header p { color: var(--text-muted); font-size: 0.95rem; margin-top: 0.5rem; }
 
@@ -1090,64 +1473,214 @@ select option {
   border: 1px solid var(--border-gold);
   border-radius: var(--radius-lg);
   margin-bottom: 2rem;
+  backdrop-filter: blur(8px);
 }
 .daily-limit-notice .icon { font-size: 2rem; margin-bottom: 0.5rem; }
 .daily-limit-notice p { color: var(--gold-light); font-size: 0.95rem; }
 .daily-limit-notice .reset-time { color: var(--text-muted); font-size: 0.8rem; margin-top: 0.25rem; }
 
-.tarot-phase { animation: fadeInUp 0.5s ease; }
-@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.tarot-phase {
+  animation: phaseReveal3D 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
+  z-index: 1;
+}
+@keyframes phaseReveal3D {
+  0%   { opacity: 0; transform: perspective(800px) translateY(40px) rotateX(-8deg) scale(0.95); }
+  60%  { transform: perspective(800px) translateY(-5px) rotateX(1deg) scale(1.01); }
+  100% { opacity: 1; transform: perspective(800px) translateY(0) rotateX(0) scale(1); }
+}
 
-/* Deck area */
+/* ==================== Deck Area 3D ==================== */
 .deck-area {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2rem;
+  position: relative;
 }
-.deck-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
 
+.deck-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Main deck visual - 3D Perspective */
 .deck-visual {
   position: relative;
-  width: 120px;
-  height: 200px;
-  margin: 1rem auto;
+  width: 130px;
+  aspect-ratio: 1696 / 2528;
+  height: auto;
+  margin: 1.5rem auto;
   cursor: pointer;
-  transition: transform 0.3s ease;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
 }
-.deck-visual:hover { transform: scale(1.05); }
+.deck-visual:hover {
+  transform: scale(1.08) rotateY(-5deg) rotateX(3deg);
+}
+
+/* Mystical aura glow behind the deck */
+.deck-visual::before {
+  content: '';
+  position: absolute;
+  inset: -30px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(245,158,11,0.15) 0%, rgba(124,58,237,0.1) 40%, transparent 70%);
+  animation: deckAuraFloat 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+@keyframes deckAuraFloat {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50%      { transform: scale(1.15); opacity: 1; }
+}
+
 .deck-card-stack {
   position: absolute;
   inset: 0;
+  z-index: 1;
   border-radius: var(--radius-md);
-  background: linear-gradient(135deg, #1e0a3c, #0d0521);
-  border: 2px solid var(--border-gold);
-  box-shadow: 4px 4px 0 1px rgba(245,158,11,0.2), 8px 8px 0 1px rgba(245,158,11,0.1);
+  background-image: url('../icon_sss/The_back_of_the_card.jpg');
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 0;
+  box-shadow:
+    4px 4px 0 1px rgba(245,158,11,0.25),
+    8px 8px 0 1px rgba(245,158,11,0.12),
+    0 0 30px rgba(124,58,237,0.2),
+    inset 0 0 20px rgba(245,158,11,0.05);
+  transform-style: preserve-3d;
+  overflow: visible;
+  transition: box-shadow 0.4s ease;
 }
-.deck-pattern {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.5rem;
-  filter: drop-shadow(0 0 10px var(--gold-main));
-  animation: pulseGlow 2s ease-in-out infinite;
-}
-@keyframes pulseGlow {
-  0%, 100% { filter: drop-shadow(0 0 10px var(--gold-main)); }
-  50%       { filter: drop-shadow(0 0 20px var(--gold-main)) drop-shadow(0 0 40px var(--purple-main)); }
-}
-.deck-shuffle-anim { animation: shuffleAnim 0.5s ease; }
-@keyframes shuffleAnim {
-  0%  { transform: translateX(0) rotate(0deg); }
-  25% { transform: translateX(-15px) rotate(-5deg); }
-  50% { transform: translateX(15px) rotate(5deg); }
-  75% { transform: translateX(-8px) rotate(-2deg); }
-  100%{ transform: translateX(0) rotate(0deg); }
+.deck-visual:hover .deck-card-stack {
+  box-shadow:
+    4px 4px 0 1px rgba(245,158,11,0.3),
+    8px 8px 0 1px rgba(245,158,11,0.15),
+    0 0 50px rgba(245,158,11,0.25),
+    0 0 80px rgba(124,58,237,0.15),
+    inset 0 0 30px rgba(245,158,11,0.08);
 }
 
-/* Card selection */
+.deck-card-stack::before,
+.deck-card-stack::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.deck-card-stack::before {
+  z-index: -1;
+  background-image: url('../icon_sss/The_back_of_the_card.jpg');
+  background-size: 100% 100%;
+  background-position: center;
+  border: 0;
+  transform: translate3d(7px, 8px, -14px);
+  box-shadow: 0 0 15px rgba(124,58,237,0.15);
+  transition: transform 0.5s ease;
+}
+.deck-card-stack::after {
+  z-index: -2;
+  background-image: url('../icon_sss/The_back_of_the_card.jpg');
+  background-size: 100% 100%;
+  background-position: center;
+  border: 0;
+  transform: translate3d(14px, 16px, -28px);
+  transition: transform 0.5s ease;
+}
+.deck-visual:hover .deck-card-stack::before {
+  transform: translate3d(9px, 10px, -18px) rotateY(-2deg);
+}
+.deck-visual:hover .deck-card-stack::after {
+  transform: translate3d(18px, 20px, -34px) rotateY(-4deg);
+}
+
+/* ===== SHUFFLE ANIMATION — Epic 3D Cascade ===== */
+.deck-shuffle-anim .deck-card-stack {
+  animation: shuffleDeck3D_v2 1.6s cubic-bezier(0.22, 0.68, 0.18, 1.1);
+}
+.deck-shuffle-anim .deck-card-stack::before {
+  animation: shuffleGhost1 1.6s cubic-bezier(0.22, 0.68, 0.18, 1.1);
+}
+.deck-shuffle-anim .deck-card-stack::after {
+  animation: shuffleGhost2 1.6s cubic-bezier(0.22, 0.68, 0.18, 1.1);
+}
+
+@keyframes shuffleDeck3D_v2 {
+  0%   { transform: translate3d(0,0,0) rotateX(0) rotateY(0) rotateZ(0) scale(1); }
+  8%   { transform: translate3d(0,-8px,0) rotateX(0) rotateY(0) rotateZ(0) scale(1.02); }
+  15%  { transform: translate3d(-35px,-15px,50px) rotateX(12deg) rotateY(-25deg) rotateZ(-8deg) scale(1.04); }
+  28%  { transform: translate3d(40px,-5px,70px) rotateX(-10deg) rotateY(30deg) rotateZ(10deg) scale(1.06); }
+  42%  { transform: translate3d(-25px,5px,45px) rotateX(8deg) rotateY(-18deg) rotateZ(-5deg) scale(1.03); }
+  56%  { transform: translate3d(20px,-2px,30px) rotateX(-5deg) rotateY(12deg) rotateZ(4deg) scale(1.02); }
+  72%  { transform: translate3d(-8px,0,15px) rotateX(3deg) rotateY(-6deg) rotateZ(-2deg) scale(1.01); }
+  88%  { transform: translate3d(3px,0,5px) rotateX(-1deg) rotateY(2deg) rotateZ(1deg) scale(1); }
+  100% { transform: translate3d(0,0,0) rotateX(0) rotateY(0) rotateZ(0) scale(1); }
+}
+@keyframes shuffleGhost1 {
+  0%   { transform: translate3d(7px,8px,-14px) rotateZ(0); }
+  15%  { transform: translate3d(-50px,-25px,60px) rotateZ(-15deg); }
+  28%  { transform: translate3d(55px,0,80px) rotateZ(12deg); }
+  42%  { transform: translate3d(-30px,10px,40px) rotateZ(-6deg); }
+  70%  { transform: translate3d(10px,5px,0) rotateZ(2deg); }
+  100% { transform: translate3d(7px,8px,-14px) rotateZ(0); }
+}
+@keyframes shuffleGhost2 {
+  0%   { transform: translate3d(14px,16px,-28px) rotateZ(0); }
+  15%  { transform: translate3d(60px,30px,40px) rotateZ(18deg); }
+  28%  { transform: translate3d(-45px,-10px,60px) rotateZ(-14deg); }
+  42%  { transform: translate3d(35px,15px,25px) rotateZ(8deg); }
+  70%  { transform: translate3d(18px,12px,-10px) rotateZ(-3deg); }
+  100% { transform: translate3d(14px,16px,-28px) rotateZ(0); }
+}
+/* ===== CUT ANIMATION — Dramatic Split ===== */
+.deck-cut-anim .deck-card-stack {
+  animation: cutDeck3D_v2 1.8s cubic-bezier(0.16, 0.9, 0.2, 1);
+}
+.deck-cut-anim .deck-card-stack::before {
+  animation: cutTopHalf3D 1.8s cubic-bezier(0.16, 0.9, 0.2, 1);
+}
+.deck-cut-anim .deck-card-stack::after {
+  animation: cutBottomHalf3D 1.8s cubic-bezier(0.16, 0.9, 0.2, 1);
+}
+
+@keyframes cutDeck3D_v2 {
+  0%, 100% { transform: rotateY(0) rotateX(0) translateX(0) translateZ(0) scale(1); }
+  10%      { transform: rotateY(0) rotateX(-5deg) translateX(0) translateZ(20px) scale(1.03); }
+  25%      { transform: rotateY(-30deg) rotateX(8deg) translateX(-25px) translateZ(40px) scale(1.05); }
+  40%      { transform: rotateY(25deg) rotateX(-5deg) translateX(20px) translateZ(30px) scale(1.04); }
+  55%      { transform: rotateY(-15deg) rotateX(3deg) translateX(-10px) translateZ(15px) scale(1.02); }
+  75%      { transform: rotateY(8deg) rotateX(-1deg) translateX(5px) translateZ(5px) scale(1.01); }
+}
+@keyframes cutTopHalf3D {
+  0%, 100% { transform: translate3d(7px,8px,-14px); }
+  20%      { transform: translate3d(-60px,-30px,70px) rotateZ(-15deg) rotateY(-20deg); }
+  40%      { transform: translate3d(-40px,-20px,90px) rotateZ(-10deg) rotateY(-10deg); }
+  60%      { transform: translate3d(40px,15px,50px) rotateZ(8deg) rotateY(10deg); }
+  80%      { transform: translate3d(15px,10px,10px) rotateZ(2deg) rotateY(3deg); }
+}
+@keyframes cutBottomHalf3D {
+  0%, 100% { transform: translate3d(14px,16px,-28px); }
+  20%      { transform: translate3d(55px,35px,30px) rotateZ(12deg) rotateY(15deg); }
+  40%      { transform: translate3d(60px,25px,50px) rotateZ(8deg) rotateY(8deg); }
+  60%      { transform: translate3d(-30px,5px,20px) rotateZ(-5deg) rotateY(-5deg); }
+  80%      { transform: translate3d(18px,14px,-10px) rotateZ(1deg) rotateY(1deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .deck-shuffle-anim .deck-card-stack,
+  .deck-shuffle-anim .deck-card-stack::before,
+  .deck-shuffle-anim .deck-card-stack::after,
+  .deck-cut-anim .deck-card-stack,
+  .deck-cut-anim .deck-card-stack::before,
+  .deck-cut-anim .deck-card-stack::after { animation-duration: 0.01ms !important; }
+}
+
+/* ==================== Card Selection — 3D Holographic ==================== */
 .card-selection-area {
   display: flex;
   flex-direction: column;
@@ -1161,112 +1694,322 @@ select option {
 }
 .pick-count {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.75rem;
   justify-content: center;
+  margin-top: 0.5rem;
 }
 .pick-dot {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   border: 2px solid var(--border-gold);
-  transition: var(--transition);
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
 }
-.pick-dot.filled { background: var(--gold-main); border-color: var(--gold-main); box-shadow: 0 0 8px var(--gold-main); }
+.pick-dot.filled {
+  background: var(--gold-main);
+  border-color: var(--gold-main);
+  box-shadow: 0 0 12px var(--gold-main), 0 0 24px rgba(245,158,11,0.4);
+  transform: scale(1.3);
+  animation: dotPulse 1.2s ease-in-out infinite;
+}
+@keyframes dotPulse {
+  0%, 100% { box-shadow: 0 0 12px var(--gold-main), 0 0 24px rgba(245,158,11,0.4); }
+  50%      { box-shadow: 0 0 18px var(--gold-main), 0 0 36px rgba(245,158,11,0.5); }
+}
 
 .cards-spread {
   display: flex;
   justify-content: center;
   gap: 0.5rem;
   flex-wrap: wrap;
-  perspective: 1000px;
+  perspective: 1200px;
+  transform-style: preserve-3d;
 }
+
 .spread-card {
-  width: 65px;
-  height: 110px;
+  width: clamp(72px, 9vw, 105px);
+  aspect-ratio: 1696 / 2528;
+  height: auto;
   border-radius: var(--radius-sm);
-  background: linear-gradient(135deg, #1e0a3c, #0d0521);
-  border: 1px solid var(--border-gold);
+  background-image: url('../icon_sss/The_back_of_the_card.jpg');
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 0;
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.1rem;
   position: relative;
+  transform-style: preserve-3d;
+  animation: cardDeal 0.5s cubic-bezier(0.23, 1, 0.32, 1) backwards;
+  overflow: hidden;
 }
-.spread-card:hover { transform: translateY(-12px) scale(1.05); box-shadow: 0 15px 30px rgba(245,158,11,0.2); }
+/* Staggered entrance for each card */
+.spread-card:nth-child(1)  { animation-delay: 0.02s; }
+.spread-card:nth-child(2)  { animation-delay: 0.04s; }
+.spread-card:nth-child(3)  { animation-delay: 0.06s; }
+.spread-card:nth-child(4)  { animation-delay: 0.08s; }
+.spread-card:nth-child(5)  { animation-delay: 0.10s; }
+.spread-card:nth-child(6)  { animation-delay: 0.12s; }
+.spread-card:nth-child(7)  { animation-delay: 0.14s; }
+.spread-card:nth-child(8)  { animation-delay: 0.16s; }
+.spread-card:nth-child(9)  { animation-delay: 0.18s; }
+.spread-card:nth-child(10) { animation-delay: 0.20s; }
+.spread-card:nth-child(11) { animation-delay: 0.22s; }
+.spread-card:nth-child(12) { animation-delay: 0.24s; }
+.spread-card:nth-child(13) { animation-delay: 0.26s; }
+.spread-card:nth-child(14) { animation-delay: 0.28s; }
+.spread-card:nth-child(15) { animation-delay: 0.30s; }
+.spread-card:nth-child(16) { animation-delay: 0.32s; }
+.spread-card:nth-child(17) { animation-delay: 0.34s; }
+.spread-card:nth-child(18) { animation-delay: 0.36s; }
+.spread-card:nth-child(19) { animation-delay: 0.38s; }
+.spread-card:nth-child(20) { animation-delay: 0.40s; }
+.spread-card:nth-child(21) { animation-delay: 0.42s; }
+
+@keyframes cardDeal {
+  0%   { opacity: 0; transform: perspective(600px) translateY(-60px) translateZ(80px) rotateX(-30deg) scale(0.6); }
+  60%  { opacity: 1; transform: perspective(600px) translateY(5px) translateZ(10px) rotateX(3deg) scale(1.02); }
+  100% { opacity: 1; transform: perspective(600px) translateY(0) translateZ(0) rotateX(0) scale(1); }
+}
+
+/* Holographic shine overlay on each spread card */
+.spread-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, transparent 30%, rgba(245,158,11,0.08) 45%, rgba(167,139,250,0.06) 55%, transparent 70%);
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+.spread-card:hover::before {
+  opacity: 1;
+}
+
+/* Edge glow effect on hover */
+.spread-card::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: calc(var(--radius-sm) + 2px);
+  background: linear-gradient(135deg, var(--gold-main), var(--purple-main), var(--gold-main));
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.spread-card:hover::after {
+  opacity: 0.5;
+}
+
+.spread-card:hover {
+  transform: perspective(600px) translateY(-18px) translateZ(25px) rotateX(-5deg) scale(1.08);
+  box-shadow:
+    0 20px 40px rgba(245,158,11,0.2),
+    0 0 30px rgba(124,58,237,0.15),
+    0 0 60px rgba(245,158,11,0.08);
+  border-color: rgba(245,158,11,0.7);
+}
+
 .spread-card.selected {
-  transform: translateY(-20px) scale(1.08);
+  transform: perspective(600px) translateY(-25px) translateZ(40px) rotateX(-3deg) scale(1.12);
   border-color: var(--gold-main);
-  box-shadow: 0 0 20px var(--gold-glow);
+  box-shadow:
+    0 0 25px var(--gold-glow),
+    0 0 50px rgba(245,158,11,0.2),
+    0 0 80px rgba(124,58,237,0.1);
   cursor: default;
+  animation: selectedGlow 2s ease-in-out infinite;
 }
+@keyframes selectedGlow {
+  0%, 100% { box-shadow: 0 0 25px var(--gold-glow), 0 0 50px rgba(245,158,11,0.2); }
+  50%      { box-shadow: 0 0 35px var(--gold-glow), 0 0 70px rgba(245,158,11,0.3), 0 0 100px rgba(124,58,237,0.15); }
+}
+
 .spread-card.selected::after {
   content: '✓';
   position: absolute;
-  top: -8px;
-  right: -8px;
-  width: 20px;
-  height: 20px;
+  top: -10px;
+  right: -10px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
-  background: var(--gold-main);
+  background: linear-gradient(135deg, var(--gold-main), #ffcc00);
   color: #000;
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
   line-height: 1;
+  opacity: 1;
+  z-index: 5;
+  box-shadow: 0 0 10px var(--gold-main);
+  animation: checkBounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes checkBounce {
+  0%   { transform: scale(0) rotate(-180deg); }
+  60%  { transform: scale(1.3) rotate(10deg); }
+  100% { transform: scale(1) rotate(0); }
 }
 
-/* Results */
+/* ==================== Results — Cinematic Reveal ==================== */
 .result-cards {
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 2rem;
   flex-wrap: wrap;
   margin-bottom: 2rem;
+  perspective: 1500px;
 }
+
 .result-card-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.45rem;
+  animation: resultCardEntrance 0.8s cubic-bezier(0.23, 1, 0.32, 1) backwards;
 }
+.result-card-wrapper:nth-child(1) { animation-delay: 0.15s; }
+.result-card-wrapper:nth-child(2) { animation-delay: 0.45s; }
+.result-card-wrapper:nth-child(3) { animation-delay: 0.75s; }
+
+@keyframes resultCardEntrance {
+  0%   { opacity: 0; transform: perspective(1000px) translateY(80px) translateZ(-100px) rotateX(25deg) scale(0.7); }
+  50%  { opacity: 0.8; transform: perspective(1000px) translateY(-10px) translateZ(20px) rotateX(-3deg) scale(1.04); }
+  100% { opacity: 1; transform: perspective(1000px) translateY(0) translateZ(0) rotateX(0) scale(1); }
+}
+
 .result-card-position {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.12em;
   font-weight: 600;
+  animation: labelFadeIn 0.5s ease backwards;
+}
+.result-card-wrapper:nth-child(1) .result-card-position { animation-delay: 0.3s; }
+.result-card-wrapper:nth-child(2) .result-card-position { animation-delay: 0.6s; }
+.result-card-wrapper:nth-child(3) .result-card-position { animation-delay: 0.9s; }
+@keyframes labelFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .tarot-card-face {
-  width: 100px;
-  height: 165px;
-  border-radius: var(--radius-sm);
-  border: 2px solid var(--border-gold);
-  background: linear-gradient(160deg, #1e1040, #0d0521);
+  width: clamp(125px, 14vw, 165px);
+  aspect-ratio: 319 / 568;
+  height: auto;
+  border-radius: 10px;
+  border: 2px solid rgba(245,158,11,0.6);
+  background-image: url('../icon_sss/The_back_of_the_card.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 0.75rem;
-  gap: 0.5rem;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.4), 0 0 20px var(--gold-glow);
-  animation: flipCard 0.6s ease;
+  padding: 0;
+  box-shadow:
+    0 12px 35px rgba(0,0,0,0.5),
+    0 0 25px var(--gold-glow),
+    0 0 60px rgba(124,58,237,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+  animation: cardFlip3D 0.8s cubic-bezier(0.23, 1, 0.32, 1);
   position: relative;
   overflow: hidden;
+  transform-style: preserve-3d;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
-.tarot-card-face.reversed { transform: rotate(180deg); }
+
+.tarot-card-face:hover {
+  transform: perspective(600px) translateY(-8px) rotateY(-8deg) rotateX(3deg) scale(1.05);
+  box-shadow:
+    0 20px 50px rgba(0,0,0,0.6),
+    0 0 40px var(--gold-glow),
+    0 0 80px rgba(124,58,237,0.2),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+}
+
+.tarot-card-face.reversed {
+  transform: rotate(180deg);
+}
+.tarot-card-face.reversed:hover {
+  transform: rotate(180deg) perspective(600px) translateY(-8px) scale(1.05);
+}
+
+/* Holographic rainbow sweep on result cards */
 .tarot-card-face::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 50% 0%, rgba(245,158,11,0.1), transparent 60%);
+  background:
+    linear-gradient(135deg, transparent 20%, rgba(245,158,11,0.12) 35%, rgba(167,139,250,0.08) 50%, rgba(236,72,153,0.06) 65%, transparent 80%);
+  animation: holoSweep 4s ease-in-out infinite;
+  pointer-events: none;
 }
-.tarot-card-face .card-emoji { font-size: 1.75rem; z-index: 1; }
+@keyframes holoSweep {
+  0%, 100% { transform: translateX(-100%) rotate(12deg); }
+  50%      { transform: translateX(100%) rotate(12deg); }
+}
+
+/* Sparkle overlay */
+.tarot-card-face::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(1.5px 1.5px at 20% 30%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 70% 20%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 50% 70%, rgba(245,158,11,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 80% 60%, rgba(167,139,250,0.4) 0%, transparent 100%);
+  animation: sparkle 3s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+@keyframes sparkle {
+  0%   { opacity: 0.3; }
+  100% { opacity: 0.8; }
+}
+
+.tarot-card-face .card-emoji {
+  display: none;
+}
+.tarot-card-face .card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 8px;
+  border: 0;
+  z-index: 1;
+  box-shadow: none;
+}
+.result-card-details {
+  width: clamp(125px, 14vw, 165px);
+  text-align: center;
+}
+.result-card-details .card-name {
+  font-family: 'Sarabun', sans-serif;
+  font-size: 0.85rem;
+  color: var(--gold-light);
+  font-weight: 700;
+  line-height: 1.35;
+  text-shadow: 0 0 8px rgba(245,158,11,0.3);
+}
+.result-card-details .card-number {
+  margin-top: 0.15rem;
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  line-height: 1.25;
+}
+
 .tarot-card-face .card-name {
   font-family: 'Cinzel', serif;
   font-size: 0.65rem;
@@ -1274,25 +2017,66 @@ select option {
   font-weight: 700;
   z-index: 1;
   line-height: 1.3;
+  text-shadow: 0 0 8px rgba(245,158,11,0.3);
 }
-.tarot-card-face .card-number { font-size: 0.7rem; color: var(--text-muted); z-index: 1; }
+.tarot-card-face .card-number {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  z-index: 1;
+}
+
 .reversed-label {
   font-size: 0.65rem;
   color: var(--pink-accent);
   font-style: italic;
+  animation: reversedPulse 2s ease-in-out infinite;
 }
-@keyframes flipCard {
-  0%   { transform: perspective(600px) rotateY(-90deg); opacity: 0; }
-  100% { transform: perspective(600px) rotateY(0deg); opacity: 1; }
+@keyframes reversedPulse {
+  0%, 100% { opacity: 0.7; }
+  50%      { opacity: 1; text-shadow: 0 0 8px rgba(236,72,153,0.4); }
 }
 
+@keyframes cardFlip3D {
+  0%   { transform: perspective(800px) rotateY(-120deg) rotateX(10deg) scale(0.7); opacity: 0;
+         box-shadow: 0 0 0 rgba(0,0,0,0), 0 0 0 transparent; }
+  40%  { transform: perspective(800px) rotateY(-15deg) rotateX(-3deg) scale(1.05); opacity: 0.9; }
+  70%  { transform: perspective(800px) rotateY(8deg) rotateX(1deg) scale(1.02); opacity: 1; }
+  100% { transform: perspective(800px) rotateY(0) rotateX(0) scale(1); opacity: 1;
+         box-shadow: 0 12px 35px rgba(0,0,0,0.5), 0 0 25px var(--gold-glow); }
+}
+
+/* ==================== Tarot Reading Box ==================== */
 .tarot-reading {
   background: rgba(255,255,255,0.03);
   border: 1px solid var(--border-glass);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
   margin-top: 1rem;
+  backdrop-filter: blur(8px);
+  animation: readingReveal 0.8s cubic-bezier(0.23, 1, 0.32, 1) backwards;
+  animation-delay: 1.2s;
+  position: relative;
+  overflow: hidden;
 }
+.tarot-reading::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold-main), var(--purple-main), transparent);
+  animation: borderSweep 3s ease-in-out infinite;
+}
+@keyframes borderSweep {
+  0%   { left: -100%; }
+  100% { left: 200%; }
+}
+@keyframes readingReveal {
+  0%   { opacity: 0; transform: translateY(30px) scale(0.97); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 .tarot-reading h3 {
   font-family: 'Cinzel', serif;
   font-size: 1rem;
@@ -1393,13 +2177,17 @@ select option {
   .chat-messages  { padding: 1rem; }
   .chat-input-area { padding: 0.7rem 1rem calc(0.9rem + env(safe-area-inset-bottom, 0px)); }
   .message-bubble { max-width: 88%; }
-  .result-cards   { gap: 1rem; }
-  .tarot-card-face { width: 85px; height: 140px; }
-  .spread-card { width: 50px; height: 85px; font-size: 0.85rem; }
+  .result-cards   { gap: 1.25rem; }
+  .tarot-card-face { width: clamp(112px, 29vw, 145px); }
+  .result-card-details { width: clamp(112px, 29vw, 145px); }
+  .spread-card { width: clamp(70px, 19vw, 100px); font-size: 0.85rem; }
+  .spread-card:hover { transform: perspective(600px) translateY(-10px) translateZ(15px) scale(1.05); }
+  .spread-card.selected { transform: perspective(600px) translateY(-15px) translateZ(25px) scale(1.08); }
   .install-banner { bottom: 0.75rem; }
 }
 @media (max-width: 380px) {
   .spread-card { width: 42px; height: 72px; font-size: 0.75rem; }
+  .tarot-card-face { width: 80px; height: 130px; }
 }
 
 /* ==========================================
@@ -1571,14 +2359,6 @@ body.sidebar-open .chat-sidebar { transform: translateX(0); }
 }
 .sidebar-item-menu:hover { background: rgba(124,58,237,0.25); color: var(--text-primary); }
 
-.sidebar-foot {
-  padding: 0.75rem 1rem;
-  border-top: 1px solid var(--border-glass);
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  text-align: center;
-}
-
 /* ---- Long-press / right-click context menu ---- */
 .chat-context-menu {
   position: fixed;
@@ -1742,7 +2522,11 @@ body.thai-chat-mode .site-footer { display: none; }
 
 .astro-hero { text-align: center; margin-bottom: 2rem; }
 .astro-hero-icon {
-  font-size: 3rem;
+  width: 3rem;
+  height: 3rem;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 1px solid var(--border-gold);
   filter: drop-shadow(0 0 18px var(--gold-glow));
   animation: rotateSlow 24s linear infinite;
   display: inline-block;
@@ -1814,7 +2598,15 @@ body.thai-chat-mode .site-footer { display: none; }
 /* ---- Workspace ---- */
 .thai-ws-head { display: flex; flex-direction: column; gap: 0.9rem; margin-bottom: 1.25rem; }
 .thai-ws-title { display: flex; align-items: center; gap: 0.85rem; }
-.thai-ws-icon { font-size: 2rem; }
+.thai-ws-icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: 0 0 2.75rem;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid var(--border-gold);
+  box-shadow: 0 0 14px var(--gold-glow);
+}
 .thai-ws-title h2 { font-family: 'Cinzel', serif; font-size: 1.15rem; color: var(--gold-light); }
 .thai-ws-title p { font-size: 0.84rem; color: var(--text-muted); line-height: 1.6; }
 
@@ -1832,13 +2624,14 @@ body.thai-chat-mode .site-footer { display: none; }
 .astro-card-hint { font-size: 0.8rem; color: var(--text-muted); margin: -0.5rem 0 0.75rem; line-height: 1.6; }
 
 .astro-form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 0.9rem; align-items: end; }
-.astro-field { display: flex; flex-direction: column; gap: 0.4rem; }
+.astro-field { display: flex; flex-direction: column; gap: 0.4rem; min-width: 0; }
 .astro-field > span { font-size: 0.82rem; font-weight: 600; color: var(--text-secondary); }
 .astro-field > span em { font-style: normal; font-weight: 400; font-size: 0.74rem; color: var(--text-muted); }
 .astro-field-full { margin-top: 0.9rem; }
 .astro-field input[type="text"],
 .astro-field input[type="date"],
 .astro-field input[type="time"],
+.astro-field select,
 .astro-field textarea,
 .astro-textarea {
   width: 100%;
@@ -1855,12 +2648,73 @@ body.thai-chat-mode .site-footer { display: none; }
   color-scheme: dark;
   resize: vertical;
 }
+.astro-field select,
+.birth-date-control select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--gold-light) 50%), linear-gradient(135deg, var(--gold-light) 50%, transparent 50%);
+  background-position: calc(100% - 17px) 50%, calc(100% - 12px) 50%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 2.25rem;
+  cursor: pointer;
+}
+.astro-field select option,
+.birth-date-control select option { background: #161229; color: var(--text-primary); }
 .astro-field input:focus, .astro-field textarea:focus, .astro-textarea:focus {
   border-color: var(--purple-main);
   background: rgba(124,58,237,0.08);
   box-shadow: 0 0 0 3px rgba(124,58,237,0.15);
 }
+.astro-field select:focus,
+.birth-date-control select:focus {
+  border-color: var(--gold-main);
+  background-color: rgba(245,158,11,0.09);
+  box-shadow: 0 0 0 3px rgba(245,158,11,0.14);
+}
 .astro-field input::placeholder, .astro-field textarea::placeholder, .astro-textarea::placeholder { color: var(--text-muted); }
+
+.birth-date-control {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+  width: 100%;
+  min-width: 0;
+}
+.birth-date-control [data-date-part="year"] { grid-column: 1 / -1; }
+.birth-date-control select {
+  width: 100%;
+  min-height: 45px;
+  padding: 0.7rem 2rem 0.7rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-glass);
+  background-color: rgba(255,255,255,0.06);
+  color: var(--text-primary);
+  font-family: 'Sarabun', sans-serif;
+  font-size: 0.92rem;
+  outline: none;
+  color-scheme: dark;
+  transition: var(--transition);
+}
+.birth-date-control input {
+  width: 100%;
+  min-height: 45px;
+  padding: 0.7rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-glass);
+  background: rgba(255,255,255,0.06);
+  color: var(--text-primary);
+  font-family: 'Sarabun', sans-serif;
+  font-size: 0.92rem;
+  outline: none;
+  transition: var(--transition);
+}
+.birth-date-control input::placeholder { color: var(--text-secondary); opacity: 0.9; }
+.birth-date-control input:focus {
+  border-color: var(--gold-main);
+  background: rgba(245,158,11,0.09);
+  box-shadow: 0 0 0 3px rgba(245,158,11,0.14);
+}
 
 .astro-segmented { display: flex; gap: 0.35rem; }
 .astro-segmented button {
@@ -1884,6 +2738,14 @@ body.thai-chat-mode .site-footer { display: none; }
   background: rgba(245,158,11,0.15);
   color: var(--gold-light);
   font-weight: 700;
+}
+.astro-segmented button:focus-visible,
+.astro-chip:focus-visible,
+.birth-date-control select:focus-visible,
+.birth-date-control input:focus-visible,
+.astro-field select:focus-visible {
+  outline: 2px solid var(--gold-light);
+  outline-offset: 2px;
 }
 
 .astro-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
@@ -2052,8 +2914,24 @@ body.thai-chat-mode .site-footer { display: none; }
   .astro-wrapper { padding-left: 1rem; padding-right: 1rem; }
   .thai-mode-grid { grid-template-columns: 1fr; }
   .astro-reading { padding: 1rem; font-size: 0.9rem; }
+  .birth-date-control { grid-template-columns: 0.8fr 1.35fr 1fr; gap: 0.35rem; }
+  .birth-date-control input { min-height: 48px; padding: 0.7rem 0.55rem; font-size: 0.86rem; }
+  .birth-date-control select { min-height: 48px; padding-left: 0.6rem; padding-right: 1.65rem; font-size: 0.86rem; background-position: calc(100% - 12px) 50%, calc(100% - 8px) 50%; }
+  .astro-field select { min-height: 48px; }
   .thai-birth-bar { flex-direction: column; align-items: stretch; gap: 0.4rem; }
   .thai-birth-bar-actions { justify-content: flex-end; }
+}
+
+@media (max-width: 900px) {
+  .astro-form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .astro-form-grid > .astro-field:first-child { grid-column: 1 / -1; }
+  .birth-date-control { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .birth-date-control [data-date-part="year"] { grid-column: 1 / -1; }
+}
+
+@media (max-width: 520px) {
+  .astro-form-grid { grid-template-columns: 1fr; }
+  .astro-form-grid > .astro-field:first-child { grid-column: auto; }
 }
 
 /* ==========================================

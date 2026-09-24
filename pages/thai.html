@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>ไสยศาสตร์ไทย — เทพซ่า 007</title>
-  <meta name="description" content="ดูดวงคอขาด ถามดวงกับหมอดู AI และวิเคราะห์ตามตำราโบราณ ตำราพรหมชาติ กราฟชีวิต ทักษาปกรณ์ สุริยยาตร์" />
+  <meta name="description" content="ดูดวงคอขาด ถามดวงกับหมอดู และวิเคราะห์ตามตำราโบราณ ตำราพรหมชาติ กราฟชีวิต ทักษาปกรณ์ สุริยยาตร์" />
   <meta name="theme-color" content="#7c3aed" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -27,7 +27,7 @@
     <a href="../index.html" class="btn-back" aria-label="กลับหน้าแรก">← กลับ</a>
     <span class="navbar-sep" style="color:var(--text-muted); font-size:0.85rem;">|</span>
     <span class="navbar-logo" style="cursor:default;">
-      <span style="font-size:1.25rem;">🪬</span>
+      <img class="nav-feature-icon" src="../icons_3/512.png" alt="ไอคอนไสยศาสตร์ไทย" />
       <span class="logo-text" style="font-size:0.95rem;">ไสยศาสตร์ไทย</span>
     </span>
   </div>
@@ -62,14 +62,13 @@
           <option value="auto">✨ อัตโนมัติ — เสียงธรรมชาติ (แนะนำ)</option>
         </select>
       </div>
-      <div class="settings-hint">แสดงเฉพาะเสียงภาษาไทยที่ติดตั้งอยู่ใน Microsoft Edge หรือระบบของคุณ</div>
     </div>
     <div class="settings-divider"></div>
     <div class="settings-section">
       <label for="setting-model">🤖 เลือกโมเดล AI</label>
       <div class="settings-select-wrapper">
         <select id="setting-model" aria-label="เลือกโมเดล Gemini">
-          <option value="models/gemini-2.5-flash">✨ Gemini 2.5 Flash</option>
+          <option value="models/gemini-3.5-flash-lite">⚡ Gemini 3.5 Flash Lite</option>
         </select>
       </div>
       <div id="model-status" class="model-status" style="display:none;"></div>
@@ -88,10 +87,6 @@
     </div>
     <div class="settings-divider"></div>
     <div class="settings-section">
-      <label>ℹ️ ข้อมูล</label>
-      <div style="font-size:0.82rem; color:var(--text-muted); line-height:1.7;">
-        ข้อมูลดวงกำเนิดและประวัติการถามดวง บันทึกในเครื่องของคุณเท่านั้น (LocalStorage) ไม่มีการส่งไปที่อื่นนอกจาก Google Gemini API
-      </div>
     </div>
   </div>
   <div class="settings-footer">
@@ -106,16 +101,16 @@
   <!-- Mode chooser -->
   <section id="thai-modes">
     <header class="astro-hero">
-      <div class="astro-hero-icon">🪬</div>
+      <img class="astro-hero-icon" src="../icons_3/512.png" alt="ไอคอนไสยศาสตร์ไทย" />
       <h1>ไสยศาสตร์ไทย</h1>
-      <p>เลือกศาสตร์ที่ต้องการ แล้วให้โหราจารย์ AI เปิดตำราให้คุณ</p>
+      <p>เลือกศาสตร์ที่ต้องการ แล้วให้โหราจารย์เปิดตำราให้คุณ</p>
     </header>
 
     <div class="thai-mode-grid" role="list">
       <button class="thai-mode-card card-purple" data-mode="khad" role="listitem" type="button">
         <span class="thai-mode-icon">🌙</span>
         <span class="thai-mode-name">ดูดวงคอขาดของตัวเอง</span>
-        <span class="thai-mode-desc">กรอกวัน-เดือน-ปี-เวลาเกิด แล้วให้ AI เปิดเกณฑ์ชะตาตามตำราพรหมชาติแบบหมดเปลือก</span>
+        <span class="thai-mode-desc">กรอกวัน-เดือน-ปี-เวลาเกิด แล้วเปิดเกณฑ์ชะตาตามตำราพรหมชาติแบบหมดเปลือก</span>
         <span class="thai-mode-tag">ต้องใช้ข้อมูลเกิด</span>
       </button>
 
@@ -140,7 +135,7 @@
     <div class="thai-ws-head">
       <button class="btn-back" id="thai-ws-back" type="button">← เปลี่ยนศาสตร์</button>
       <div class="thai-ws-title">
-        <span class="thai-ws-icon" id="thai-ws-icon">🌙</span>
+        <span class="thai-ws-icon" id="thai-ws-icon"><img src="../icons_3/512.png" alt="ไอคอนไสยศาสตร์ไทย" /></span>
         <div>
           <h2 id="thai-ws-name">—</h2>
           <p id="thai-ws-desc">—</p>

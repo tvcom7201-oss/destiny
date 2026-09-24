@@ -1,7 +1,7 @@
 {
   "name": "เทพซ่า 007 — ดูดวงด้วย AI",
   "short_name": "เทพซ่า 007",
-  "description": "ดูดวง ตีเลขฝัน ไพ่ทาโรต์ และไสยศาสตร์ครบครัน ด้วย AI Gemini",
+  "description": "ดูดวง ตีเลขฝัน ไพ่ทาโรต์ และไสยศาสตร์ครบครัน",
   "id": "./",
   "start_url": "./index.html",
   "scope": "./",
@@ -49,6 +49,18 @@
       "name": "ดูดวงจีน",
       "short_name": "จีน",
       "url": "./pages/chinese.html",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "ดูดวงอินเดีย",
+      "short_name": "อินเดีย",
+      "url": "./pages/indian.html",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "ดูดวงยุโรป",
+      "short_name": "ยุโรป",
+      "url": "./pages/western.html",
       "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
     }
   ]

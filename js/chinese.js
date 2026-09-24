@@ -60,7 +60,9 @@ const CN_PILLAR_INFO = [
 ];
 
 /* ---------------- คำสั่งระบบของ AI ---------------- */
-const CN_SYSTEM_PROMPT = `คุณคือ "เทพซ่า" ซินแสผู้เชี่ยวชาญโหราศาสตร์จีนโบราณ ปาจื้อ (四柱八字) ห้าธาตุ (五行) และวัยจร
+const CN_SYSTEM_PROMPT = `คุณคือ "เทพซ่า" ซินแสผู้ชายผู้เชี่ยวชาญโหราศาสตร์จีนโบราณ ปาจื้อ (四柱八字) ห้าธาตุ (五行) และวัยจร
+
+ใช้สรรพนามผู้ชายและลงท้ายด้วย "ครับ" หรือ "ครับผม" เท่านั้น ห้ามใช้ "ค่ะ" หรือ "คะ"
 
 ข้อมูลดวงจีนของผู้ใช้ถูกคำนวณมาให้แล้วในข้อความของผู้ใช้ (เสาชะตาทั้ง 4 พร้อมธาตุ จำนวนธาตุแต่ละชนิด วัยจร และปีปัจจุบัน)
 ห้ามคำนวณเสาชะตา ธาตุ หรือวัยจรใหม่ ให้ใช้ข้อมูลนั้นเป็นข้อเท็จจริงแล้วทำหน้าที่ตีความเท่านั้น
@@ -358,6 +360,9 @@ class ChineseAstro {
   }
 
   _bindForm() {
+    BirthProfile.enhanceDateInput(document.getElementById('cn-birth-date'));
+    BirthProfile.enhanceTimeInput(document.getElementById('cn-birth-time'));
+    BirthProfile.syncSegmentedGender(document.getElementById('cn-gender'));
     this.gender = document.querySelector('#cn-gender button.active')?.dataset.gender || 'ชาย';
     document.querySelectorAll('#cn-gender button').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -397,7 +402,7 @@ class ChineseAstro {
     const timeStr = document.getElementById('cn-birth-time')?.value || '';
     const analysed = Bazi.analyse(dateStr, timeStr, this.gender);
     if (!analysed) {
-      showToast('กรอกวันเดือนปีเกิดก่อนนะคะ 🗓️', 'error');
+      showToast('กรอกวันเดือนปีเกิดก่อนนะครับ 🗓️', 'error');
       document.getElementById('cn-birth-date')?.focus();
       return null;
     }
@@ -449,7 +454,7 @@ class ChineseAstro {
   /* ---------- รันวิเคราะห์ ---------- */
   async _run() {
     if (this.loading) return;
-    if (!Store.get(STORAGE.API_KEY, '')) { showToast('ใส่ API Key ก่อนนะคะ ⚙️', 'error'); return; }
+    if (!Store.get(STORAGE.API_KEY, '')) { showToast('ใส่ API Key ก่อนนะครับ ⚙️', 'error'); return; }
 
     const rec = this._collect();
     if (!rec) return;

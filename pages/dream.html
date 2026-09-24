@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>ตีเลขจากความฝัน — เทพซ่า 007</title>
-  <meta name="description" content="เล่าความฝันให้ AI วิเคราะห์และตีออกมาเป็นเลขนำโชค 2 ตัว 3 ตัว 6 ตัว ตามหลักไสยศาสตร์ไทย" />
+  <meta name="description" content="เล่าความฝันแล้ววิเคราะห์เป็นเลขนำโชค 2 ตัว 3 ตัว 6 ตัว ตามหลักไสยศาสตร์ไทย" />
   <meta name="theme-color" content="#7c3aed" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -28,7 +28,7 @@
     <a href="../index.html" class="btn-back" aria-label="กลับหน้าแรก">← กลับ</a>
     <span class="navbar-sep" style="color:var(--text-muted); font-size:0.85rem;">|</span>
     <span class="navbar-logo" style="cursor:default;">
-      <span style="font-size:1.25rem;">🌙</span>
+      <img class="nav-feature-icon" src="../icons_1/512.png" alt="ไอคอนตีเลขจากความฝัน" />
       <span class="logo-text" style="font-size:0.95rem;">ตีเลขจากความฝัน</span>
     </span>
   </div>
@@ -48,7 +48,6 @@
     <span class="sidebar-new-icon">✚</span> เริ่มความฝันใหม่
   </button>
   <div class="sidebar-list" id="sidebar-list" role="list"></div>
-  <div class="sidebar-foot">💾 บันทึกไว้ในเครื่องของคุณอัตโนมัติ</div>
 </aside>
 
 <!-- ========== Conversation Context Menu ========== -->
@@ -98,14 +97,13 @@
           <option value="auto">✨ อัตโนมัติ — เสียงธรรมชาติ (แนะนำ)</option>
         </select>
       </div>
-      <div class="settings-hint">แสดงเฉพาะเสียงภาษาไทยที่ติดตั้งอยู่ใน Microsoft Edge หรือระบบของคุณ</div>
     </div>
     <div class="settings-divider"></div>
     <div class="settings-section">
       <label for="setting-model">🤖 เลือกโมเดล AI</label>
       <div class="settings-select-wrapper">
         <select id="setting-model" aria-label="เลือกโมเดล Gemini">
-          <option value="models/gemini-2.5-flash">✨ Gemini 2.5 Flash</option>
+          <option value="models/gemini-3.5-flash-lite">⚡ Gemini 3.5 Flash Lite</option>
         </select>
       </div>
       <div id="model-status" class="model-status" style="display:none;"></div>
@@ -134,7 +132,7 @@
 
   <!-- Chat Header -->
   <header class="chat-header">
-    <div class="chat-header-icon">🌙</div>
+    <img class="chat-header-icon" src="../icons_1/512.png" alt="ไอคอนตีเลขจากความฝัน" />
     <div class="chat-header-text">
       <h1>ตีเลขจากความฝัน</h1>
       <p>เล่าความฝัน → รับเลขนำโชคตามหลักไสยศาสตร์ไทย</p>
@@ -145,7 +143,7 @@
   <div id="no-api-dream" class="no-api-warning" style="display:none; margin:1rem 1.5rem;">
     <div class="icon">🔑</div>
     <h3>ต้องการ API Key</h3>
-    <p>กด ⚙️ มุมขวาบน เพื่อใส่ Gemini API Key ก่อนเริ่มใช้งาน</p>
+    <p>กด ⚙️ มุมขวาบน เพื่อใส่ API Key ก่อนเริ่มใช้งาน</p>
   </div>
 
   <!-- Messages Area -->

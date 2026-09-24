@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tepsa-007-v10';
+const CACHE_NAME = 'tepsa-007-v17';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -6,6 +6,8 @@ const STATIC_ASSETS = [
   './pages/tarot.html',
   './pages/thai.html',
   './pages/chinese.html',
+  './pages/indian.html',
+  './pages/western.html',
   './css/style.css',
   './js/app.js',
   './js/models.js',
@@ -16,7 +18,20 @@ const STATIC_ASSETS = [
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png',
-  './icons_1/128.png'
+  './icons_1/128.png',
+  './icons_1/512.png',
+  './icons_2/512.png',
+  './icons_3/512.png',
+  './icons_4/512.png',
+  './icons_5/512.png',
+  './icons_6/512.png',
+  './icons_1/1.mp3',
+  './icons_2/2.mp3',
+  './icons_2/2-0.mp3',
+  './icons_3/3.mp3',
+  './icons_4/4.mp3',
+  './icons_5/5.mp3',
+  './icons_6/6.mp3'
 ];
 
 // Install - cache static assets

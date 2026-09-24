@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>ไพ่ทาโรต์ & ไพ่ยิปซี — เทพซ่า 007</title>
-  <meta name="description" content="สับไพ่ ตัดไพ่ เลือก 3 ใบ รับคำทำนายจาก AI Gemini ไพ่ทาโรต์ครบ 78 ใบ วันละ 1 ครั้ง" />
+  <meta name="description" content="สับไพ่ ตัดไพ่ เลือก 3 ใบ รับคำทำนาย ไพ่ทาโรต์ครบ 78 ใบ เปิดไพ่ได้ตลอดเวลาตามใจคุณ" />
   <meta name="theme-color" content="#f59e0b" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <link rel="manifest" href="../manifest.json" />
   <link rel="apple-touch-icon" href="../icons/icon-192.png" />
-  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/style.css?v=tarot-cardback-4" />
 </head>
 <body>
 
@@ -27,7 +27,7 @@
     <a href="../index.html" class="btn-back" aria-label="กลับหน้าแรก">← กลับ</a>
     <span style="color:var(--text-muted); font-size:0.85rem;">|</span>
     <span class="navbar-logo" style="cursor:default;">
-      <span style="font-size:1.25rem;">🃏</span>
+      <img class="nav-feature-icon" src="../icons_2/512.png" alt="ไอคอนไพ่ทาโรต์" />
       <span class="logo-text" style="font-size:0.95rem;">ไพ่ทาโรต์ & ไพ่ยิปซี</span>
     </span>
   </div>
@@ -59,7 +59,7 @@
       <label for="setting-model">🤖 เลือกโมเดล AI</label>
       <div class="settings-select-wrapper">
         <select id="setting-model" aria-label="เลือกโมเดล">
-          <option value="models/gemini-2.5-flash">✨ Gemini 2.5 Flash</option>
+          <option value="models/gemini-3.5-flash-lite">⚡ Gemini 3.5 Flash Lite</option>
         </select>
       </div>
       <div id="model-status" class="model-status" style="display:none;"></div>
@@ -84,7 +84,6 @@
           <option value="auto">✨ อัตโนมัติ — เสียงธรรมชาติ (แนะนำ)</option>
         </select>
       </div>
-      <div class="settings-hint">แสดงเฉพาะเสียงภาษาไทยที่ติดตั้งอยู่ใน Microsoft Edge หรือระบบของคุณ</div>
     </div>
   </div>
   <div class="settings-footer">
@@ -99,16 +98,9 @@
 
   <!-- Header -->
   <header class="tarot-header" aria-labelledby="tarot-title">
-    <h1 id="tarot-title">🃏 ไพ่ทาโรต์ & ไพ่ยิปซี</h1>
-    <p>สับไพ่ · ตัดไพ่ · เลือก 3 ใบ · รับคำทำนายจาก AI</p>
+    <h1 id="tarot-title"><img class="tarot-title-icon" src="../icons_2/512.png" alt="ไอคอนไพ่ทาโรต์" /> ไพ่ทาโรต์ & ไพ่ยิปซี</h1>
+    <p>สับไพ่ · ตัดไพ่ · เลือก 3 ใบ · รับคำทำนาย</p>
   </header>
-
-  <!-- Daily Limit Notice -->
-  <div id="daily-limit-notice" style="display:none;" class="daily-limit-notice" role="status">
-    <div class="icon">🌙</div>
-    <p>คุณได้จับไพ่วันนี้แล้ว ผลการอ่านจะคงอยู่จนถึงเที่ยงคืน</p>
-    <div class="reset-time"></div>
-  </div>
 
   <!-- ========== PHASE: DECK ========== -->
   <section id="phase-deck" class="tarot-phase" aria-label="เตรียมไพ่">
@@ -124,19 +116,18 @@
       <!-- Deck Visual -->
       <div class="deck-visual" id="deck-visual" role="img" aria-label="กองไพ่">
         <div class="deck-card-stack"></div>
-        <div class="deck-pattern">☯️</div>
       </div>
 
       <!-- Actions -->
       <div class="deck-actions">
         <button class="btn-gold" id="btn-shuffle" aria-label="สับไพ่">
-          🔀 สับไพ่
+          สับไพ่
         </button>
         <button class="btn-gold" id="btn-cut" aria-label="ตัดไพ่">
-          ✂️ ตัดไพ่
+          ตัดไพ่
         </button>
         <button class="btn-primary" id="btn-start-pick" aria-label="เริ่มจับไพ่">
-          🃏 เริ่มจับไพ่
+          เริ่มจับไพ่
         </button>
       </div>
 
@@ -171,7 +162,7 @@
   <section id="phase-result" class="tarot-phase" style="display:none;" aria-label="ผลไพ่">
 
     <div style="text-align:center; margin-bottom:1.5rem;">
-      <p style="color:var(--text-secondary); font-size:0.9rem;">🌙 ไพ่แห่งวันนี้ของคุณ</p>
+      <p style="color:var(--text-secondary); font-size:0.9rem;">✨ ไพ่ที่คุณเปิดได้</p>
     </div>
 
     <!-- Result Cards -->
@@ -184,8 +175,8 @@
       <div style="text-align:center; font-size:0.75rem; color:var(--text-muted);">🌟 อนาคต / ผลที่จะมาถึง</div>
     </div>
 
-    <!-- AI Reading -->
-    <div id="tarot-reading-box" class="tarot-reading" style="display:none;" role="article" aria-label="คำทำนายจาก AI">
+    <!-- Reading -->
+    <div id="tarot-reading-box" class="tarot-reading" style="display:none;" role="article" aria-label="คำทำนาย">
       <h3>🔮 คำทำนายจากเทพซ่า</h3>
       <div id="tarot-reading-text" class="tarot-reading-text"></div>
     </div>
@@ -194,13 +185,13 @@
     <div id="no-api-tarot" class="no-api-warning" style="display:none; margin-top:1rem;">
       <div class="icon">🔑</div>
       <h3>ต้องการ API Key</h3>
-      <p>กด ⚙️ มุมขวาบน เพื่อใส่ Gemini API Key เพื่อรับคำทำนาย</p>
+      <p>กด ⚙️ มุมขวาบน เพื่อใส่ API Key เพื่อรับคำทำนาย</p>
     </div>
 
     <!-- Action buttons -->
     <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-top:1.5rem;">
       <button class="btn-primary" id="btn-new-reading" style="font-size:0.85rem; padding:0.6rem 1.25rem;">
-        🔄 จับไพ่ใหม่ (ล้างผลวันนี้)
+        🔄 จับไพ่อีกครั้ง
       </button>
       <a href="../index.html" class="btn-gold" style="font-size:0.85rem; padding:0.6rem 1.25rem; text-decoration:none;">
         🏠 กลับหน้าแรก
@@ -227,6 +218,6 @@
 
 <script src="../js/app.js"></script>
 <script src="../js/models.js"></script>
-<script src="../js/tarot.js"></script>
+<script src="../js/tarot.js?v=tarot-card-images-7"></script>
 </body>
 </html>

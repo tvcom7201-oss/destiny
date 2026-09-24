@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>เทพซ่า 007 — ดูดวงด้วย AI Gemini</title>
-  <meta name="description" content="เทพซ่า 007 — ดูดวง ตีเลขจากความฝัน ไพ่ทาโรต์ ไพ่ยิปซี และไสยศาสตร์หลากหลาย ด้วยพลัง AI Gemini" />
+  <title>เทพซ่า 007 — ดูดวงและคำทำนาย</title>
+  <meta name="description" content="เทพซ่า 007 — ดูดวงไทย จีน อินเดีย ยุโรป ตีเลขจากความฝัน และไพ่ทาโรต์ด้วย AI" />
   <meta name="theme-color" content="#7c3aed" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -17,7 +17,7 @@
   <meta property="og:description" content="ดูดวง ตีเลขฝัน ไพ่ทาโรต์ ไสยศาสตร์ครบครัน" />
   <meta property="og:type"        content="website" />
 
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/style.css?v=abdul-chat-4" />
 </head>
 <body>
 
@@ -31,12 +31,12 @@
 
 <!-- ========== Navbar ========== -->
 <nav class="navbar" role="navigation" aria-label="เมนูหลัก">
-  <a href="index.html" class="navbar-logo" aria-label="หน้าแรก">
-    <span class="logo-icon">☸️</span>
+  <a href="index.html" class="navbar-logo abdul-secret-trigger" aria-label="หน้าแรก เปิดแชทอับดุล">
+    <img class="logo-icon" src="icons/icon-512.png" alt="" />
     <span class="logo-text">เทพซ่า 007</span>
   </a>
   <div class="navbar-actions">
-    <button class="btn-icon" id="btn-settings" aria-label="การตั้งค่า" title="การตั้งค่า">⚙️</button>
+    <button class="btn-icon" id="btn-settings" aria-label="การตั้งค่า" title="การตั้งค่า"><span class="settings-gear-icon">⚙️</span></button>
   </div>
 </nav>
 
@@ -44,7 +44,7 @@
 <div class="settings-overlay" id="settings-overlay" role="dialog" aria-modal="true" aria-labelledby="settings-title"></div>
 <aside class="settings-panel" id="settings-panel">
   <div class="settings-header">
-    <h2 id="settings-title">⚙️ การตั้งค่า</h2>
+    <h2 id="settings-title"><img class="settings-title-icon" src="icon_sss/settings(2).webp" alt="" /> การตั้งค่า</h2>
     <button class="btn-icon" id="btn-settings-close" aria-label="ปิด">✕</button>
   </div>
   <div class="settings-body">
@@ -68,7 +68,7 @@
       <label for="setting-model">🤖 เลือกโมเดล AI</label>
       <div class="settings-select-wrapper">
         <select id="setting-model" aria-label="เลือกโมเดล Gemini">
-          <option value="models/gemini-2.5-flash">✨ Gemini 2.5 Flash</option>
+          <option value="models/gemini-3.5-flash-lite">⚡ Gemini 3.5 Flash Lite</option>
         </select>
       </div>
       <div id="model-status" class="model-status" style="display:none;"></div>
@@ -96,18 +96,9 @@
           <option value="auto">✨ อัตโนมัติ — เสียงธรรมชาติ (แนะนำ)</option>
         </select>
       </div>
-      <div class="settings-hint">แสดงเฉพาะเสียงภาษาไทยที่ติดตั้งอยู่ใน Microsoft Edge หรือระบบของคุณ</div>
     </div>
 
     <div class="settings-divider"></div>
-
-    <!-- Info -->
-    <div class="settings-section">
-      <label>ℹ️ ข้อมูล</label>
-      <div style="font-size:0.82rem; color:var(--text-muted); line-height:1.7;">
-        ข้อมูลทั้งหมด (API Key, ประวัติ, ผลไพ่) บันทึกในเครื่องของคุณเท่านั้น ไม่มีการส่งข้อมูลไปยังเซิร์ฟเวอร์ใดๆ นอกจาก Google Gemini API
-      </div>
-    </div>
 
   </div>
   <div class="settings-footer">
@@ -122,13 +113,11 @@
   <!-- Hero -->
   <section class="hero" aria-labelledby="hero-title">
     <h1 class="hero-title" id="hero-title">เทพซ่า 007</h1>
-    <div class="hero-title-sub">TEPSA 007</div>
     <p class="hero-desc">
-      ดูดวง ตีเลขจากความฝัน ไพ่ทาโรต์ และไสยศาสตร์หลากหลายสาย<br>
-      ทุกคำทำนายขับเคลื่อนโดยปัญญาประดิษฐ์ Gemini
+      ดูดวงไทย จีน อินเดีย ยุโรป ตีเลขจากความฝัน และไพ่ทาโรต์ด้วย AI<br>
     </p>
     <div class="hero-divider">
-      <div class="hero-divider-icon">🔮</div>
+      <img class="hero-divider-icon" src="icon_sss/1f52e.gif" alt="ลูกแก้วพยากรณ์" />
     </div>
   </section>
 
@@ -139,56 +128,85 @@
 
       <!-- Feature 1: Dream -->
       <a href="pages/dream.html" class="feature-card active" role="listitem" style="--glow-color:rgba(124,58,237,0.35); --glow-border:#7c3aed;">
-        <div class="feature-badge badge-new">พร้อมใช้</div>
-        <span class="feature-icon">🌙</span>
+        <div class="feature-badge badge-new">Zzz</div>
+        <img class="feature-icon feature-icon-image" src="icons_1/512.png" alt="ไอคอนตีเลขจากความฝัน" />
         <div class="feature-title">ตีเลขจากความฝัน</div>
-        <div class="feature-desc">เล่าความฝันให้ AI ฟัง แล้วรับเลขนำโชค 2 ตัว 3 ตัว 6 ตัว ตามหลักตำราไทยโบราณ</div>
+        <div class="feature-desc">เล่าความฝัน แล้วรับเลขนำโชค 2 ตัว 3 ตัว 6 ตัว ตามหลักตำราไทยโบราณ</div>
       </a>
 
       <!-- Feature 2: Tarot -->
       <a href="pages/tarot.html" class="feature-card active-gold" role="listitem" style="--glow-color:rgba(245,158,11,0.35); --glow-border:#f59e0b;">
-        <div class="feature-badge badge-new">พร้อมใช้</div>
-        <img class="feature-icon feature-icon-image" src="icons_1/128.png" alt="ไอคอนไพ่ทาโรต์" />
+        <div class="feature-badge badge-new">ลิงกัง</div>
+        <img class="feature-icon feature-icon-image" src="icons_2/512.png" alt="ไอคอนไพ่ทาโรต์" />
         <div class="feature-title">ไพ่ทาโรต์ & ไพ่ยิปซี</div>
-        <div class="feature-desc">สับไพ่ ตัดไพ่ เลือก 3 ใบ แล้วรับคำทำนายจาก AI วันละ 1 ครั้ง ไพ่ครบ 78 ใบ</div>
+        <div class="feature-desc">สับไพ่ ตัดไพ่ เลือก 3 ใบ แล้วรับคำทำนายวันละ 1 ครั้ง ไพ่ครบ 78 ใบ</div>
       </a>
 
       <!-- Feature 3: Thai -->
       <a href="pages/thai.html" class="feature-card active-pink" role="listitem" style="--glow-color:rgba(236,72,153,0.3); --glow-border:#ec4899;">
-        <div class="feature-badge badge-new">พร้อมใช้</div>
-        <span class="feature-icon">🐘</span>
+        <div class="feature-badge badge-new">เณรตัง</div>
+        <img class="feature-icon feature-icon-image" src="icons_3/512.png" alt="ไอคอนไสยศาสตร์ไทย" />
         <div class="feature-title">ไสยศาสตร์ไทย</div>
-        <div class="feature-desc">ดูดวงคอขาด ถามดวงกับหมอดู AI และวิเคราะห์ตามตำราโบราณ พรหมชาติ กราฟชีวิต ทักษา</div>
+        <div class="feature-desc">ดูดวงคอขาด ถามดวงกับหมอดู และวิเคราะห์ตามตำราโบราณ พรหมชาติ กราฟชีวิต ทักษา</div>
       </a>
 
       <!-- Feature 4: Chinese -->
       <a href="pages/chinese.html" class="feature-card active-red" role="listitem" style="--glow-color:rgba(239,68,68,0.3); --glow-border:#ef4444;">
-        <div class="feature-badge badge-new">พร้อมใช้</div>
-        <span class="feature-icon">🐉</span>
+        <div class="feature-badge badge-new">อาหวังเมืองจีน</div>
+        <img class="feature-icon feature-icon-image" src="icons_4/512.png" alt="ไอคอนดูดวงจีน" />
         <div class="feature-title">ดูดวงจีน</div>
         <div class="feature-desc">ปาจื้อ 4 เสาชะตา 5 ธาตุ วัยจร 10 ปี และดวงรายปี วิเคราะห์ด้วย AI</div>
       </a>
 
       <!-- Feature 5: India -->
-      <div class="feature-card coming-soon" role="listitem">
-        <div class="feature-badge badge-soon">เร็วๆ นี้</div>
-        <span class="feature-icon">🌺</span>
+      <a href="pages/indian.html" class="feature-card active-lotus" role="listitem" style="--glow-color:rgba(244,114,182,0.3); --glow-border:#f472b6;">
+        <div class="feature-badge badge-new">บังบวบ</div>
+        <img class="feature-icon feature-icon-image" src="icons_5/512.png" alt="ไอคอนไสยศาสตร์อินเดีย" />
         <div class="feature-title">ไสยศาสตร์อินเดีย</div>
         <div class="feature-desc">โหราศาสตร์เวทมนตร์ จักระ มันตรา ดวงชะตาตามคัมภีร์เวท</div>
-      </div>
+      </a>
 
       <!-- Feature 6: Europe -->
-      <div class="feature-card coming-soon" role="listitem">
-        <div class="feature-badge badge-soon">เร็วๆ นี้</div>
-        <span class="feature-icon">🔮</span>
+      <a href="pages/western.html" class="feature-card active-cyan" role="listitem" style="--glow-color:rgba(34,211,238,0.28); --glow-border:#22d3ee;">
+        <div class="feature-badge badge-new">I sas</div>
+        <img class="feature-icon feature-icon-image" src="icons_6/512.png" alt="ไอคอนดูดวงยุโรป" />
         <div class="feature-title">ดูดวงยุโรป</div>
         <div class="feature-desc">ลูกแก้ว คริสตัล หมอดูยิปซี เมทาฟิสิกส์ และโหราศาสตร์ตะวันตก</div>
-      </div>
+      </a>
 
     </div>
   </section>
 
 </main>
+
+<!-- ========== Secret Abdul Chat ========== -->
+<aside class="abdul-chat" id="abdul-chat" aria-hidden="true" aria-labelledby="abdul-chat-title">
+  <header class="abdul-chat-header">
+    <img src="icon_sss/อับดุลเอ๊ย.jpg" alt="อับดุล" class="abdul-avatar" />
+    <div>
+      <h2 id="abdul-chat-title">อับดุล</h2>
+      <p>ถามอะไรก็ไม่ค่อยอยากตอบจ้ะนายจ๋า</p>
+    </div>
+    <button class="abdul-chat-close" id="abdul-chat-close" type="button" aria-label="ปิดแชท">×</button>
+  </header>
+  <div class="abdul-chat-messages" id="abdul-chat-messages" role="log" aria-live="polite"></div>
+  <form class="abdul-chat-input-area" id="abdul-chat-form">
+    <textarea id="abdul-chat-input" rows="1" maxlength="500" placeholder="พิมพ์มาจ้ะนายจ๋า..." aria-label="ข้อความถึงอับดุล"></textarea>
+    <button class="abdul-chat-send" type="submit" aria-label="ส่งข้อความ">ส่ง</button>
+  </form>
+  <!-- Context Menu for Message Actions (Long Press on mobile, Right Click on PC) -->
+  <div class="abdul-context-menu abdul-delete-menu" id="abdul-delete-menu" role="menu" aria-hidden="true">
+    <button type="button" class="abdul-menu-item abdul-action-copy" id="abdul-menu-copy" aria-label="คัดลอกข้อความ">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+      <span>คัดลอก</span>
+    </button>
+    <button type="button" class="abdul-menu-item abdul-action-delete abdul-delete-action" id="abdul-delete-action" aria-label="ลบข้อความ">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+      <span>ลบข้อความ</span>
+    </button>
+  </div>
+  <div class="abdul-toast" id="abdul-toast" aria-live="polite"></div>
+</aside>
 
 <!-- ========== PWA Install Banner ========== -->
 <div class="install-banner" id="install-banner" role="complementary" aria-label="ติดตั้งแอป">
@@ -203,7 +221,7 @@
   </div>
 </div>
 
-<script src="js/app.js"></script>
+<script src="js/app.js?v=abdul-chat-5"></script>
 <script src="js/models.js"></script>
 </body>
 </html>

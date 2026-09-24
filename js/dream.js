@@ -5,7 +5,9 @@
 
 'use strict';
 
-const DREAM_SYSTEM_PROMPT = `คุณคือ "เทพซ่า" หมอดูผู้เชี่ยวชาญด้านการตีเลขจากความฝัน ตามหลักไสยศาสตร์ไทย และตำราทายฝันไทยโบราณ
+const DREAM_SYSTEM_PROMPT = `คุณคือ "เทพซ่า" หมอดูผู้ชายผู้เชี่ยวชาญด้านการตีเลขจากความฝัน ตามหลักไสยศาสตร์ไทย และตำราทายฝันไทยโบราณ
+
+ใช้สรรพนามผู้ชายและลงท้ายด้วย "ครับ" หรือ "ครับผม" เท่านั้น ห้ามใช้ "ค่ะ" หรือ "คะ"
 
 กฎการตอบ:
 1. วิเคราะห์ความฝันที่ผู้ใช้บอกอย่างละเอียด อธิบายความหมายทางไสยศาสตร์ไทย
@@ -495,7 +497,7 @@ class DreamChat {
     } catch (err) {
       typingEl.remove();
       const msg = err.message === 'NO_API_KEY'
-        ? '⚠️ กรุณาใส่ API Key ในการตั้งค่าก่อนนะคะ'
+        ? '⚠️ กรุณาใส่ API Key ในการตั้งค่าก่อนนะครับ'
         : `❌ เกิดข้อผิดพลาด: ${err.message}`;
       this.messagesEl?.appendChild(this._createBubble('ai', msg, null));
       this._scrollBottom();
@@ -542,7 +544,9 @@ class DreamChat {
 
     const avatar = document.createElement('div');
     avatar.className = 'message-avatar';
-    avatar.textContent = role === 'ai' ? '🔮' : '🌙';
+    avatar.innerHTML = role === 'ai'
+      ? '<img src="../icons_1/512.png" alt="เทพซ่า" />'
+      : '<span class="message-user-icon" aria-hidden="true">◉</span>';
 
     const bubble = document.createElement('div');
     bubble.className = 'message-bubble';
@@ -590,7 +594,7 @@ class DreamChat {
     wrapper.className = 'message ai';
     wrapper.id = 'typing-indicator';
     wrapper.innerHTML = `
-      <div class="message-avatar">🔮</div>
+      <div class="message-avatar"><img src="../icons_1/512.png" alt="เทพซ่า" /></div>
       <div class="typing-indicator">
         <div class="typing-dot"></div>
         <div class="typing-dot"></div>
@@ -616,11 +620,11 @@ class DreamChat {
     const wrapper = document.createElement('div');
     wrapper.className = 'message ai welcome-message';
     wrapper.innerHTML = `
-      <div class="message-avatar">🔮</div>
+      <div class="message-avatar"><img src="../icons_1/512.png" alt="เทพซ่า" /></div>
       <div class="message-bubble">
-        สวัสดีค่ะ ฉันคือ <strong>เทพซ่า</strong> หมอดูตีเลขจากความฝัน ✨<br><br>
-        เล่าความฝันของคุณให้ฟังซิคะ... ฝันเห็นอะไร มีสัตว์ สถานที่ หรือเหตุการณ์อะไรบ้าง?<br><br>
-        ฉันจะวิเคราะห์ตามหลัก<strong>ตำราทายฝันไทยโบราณ</strong> และตีออกมาเป็นเลขนำโชคให้นะคะ 🌙<br><br>
+        สวัสดีครับ ผมคือ <strong>เทพซ่า</strong> หมอดูตีเลขจากความฝัน ✨<br><br>
+        เล่าความฝันของคุณให้ฟังได้เลยครับ... ฝันเห็นอะไร มีสัตว์ สถานที่ หรือเหตุการณ์อะไรบ้าง?<br><br>
+        ผมจะวิเคราะห์ตามหลัก<strong>ตำราทายฝันไทยโบราณ</strong> และตีออกมาเป็นเลขนำโชคให้ครับ 🌙<br><br>
         <span style="font-size:0.8rem; color:var(--text-muted);">
           ทุกความฝันถูกเก็บเป็นประวัติแยกเรื่อง — กด ☰ เพื่อดูทั้งหมด
         </span>
@@ -716,7 +720,7 @@ class DreamChat {
     this.voiceWatchdog = setTimeout(() => {
       if (!this.voiceStarted) {
         this._setListening(false);
-        showToast('🎤 เปิดไมโครโฟนในเบราว์เซอร์นี้ไม่ได้ ลองพิมพ์แทนนะคะ', 'error');
+        showToast('🎤 เปิดไมโครโฟนในเบราว์เซอร์นี้ไม่ได้ ลองพิมพ์แทนนะครับ', 'error');
       }
     }, 2500);
 
@@ -725,7 +729,7 @@ class DreamChat {
     } catch {
       clearTimeout(this.voiceWatchdog);
       this._setListening(false);
-      showToast('🎤 ไมโครโฟนถูกใช้งานอยู่ ลองใหม่อีกครั้งนะคะ', 'error');
+      showToast('🎤 ไมโครโฟนถูกใช้งานอยู่ ลองใหม่อีกครั้งนะครับ', 'error');
     }
   }
 }

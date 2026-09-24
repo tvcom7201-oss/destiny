@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ดูดวงยุโรป — เทพซ่า 007</title>
+  <meta name="description" content="ดูดวงยุโรปและโหราศาสตร์ตะวันตกด้วย AI" />
+  <meta name="theme-color" content="#22d3ee" />
+  <link rel="manifest" href="../manifest.json" />
+  <link rel="apple-touch-icon" href="../icons/icon-192.png" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body data-astro-system="western">
+  <div class="stars-bg"></div>
+  <div class="nebula-orbs"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
+
+  <nav class="navbar" role="navigation" aria-label="เมนูนำทาง">
+    <div style="display:flex;align-items:center;gap:.75rem">
+      <a href="../index.html" class="btn-back" aria-label="กลับหน้าแรก">← กลับ</a>
+      <span class="navbar-sep">|</span>
+      <span class="navbar-logo" style="cursor:default"><img class="nav-feature-icon" src="../icons_6/512.png" alt="ไอคอนดูดวงยุโรป" /><span class="logo-text" style="font-size:.95rem">ดูดวงยุโรป</span></span>
+    </div>
+    <div class="navbar-actions"><button class="btn-icon" id="btn-settings" aria-label="การตั้งค่า" title="การตั้งค่า">⚙️</button></div>
+  </nav>
+
+  <div class="settings-overlay" id="settings-overlay" role="dialog" aria-modal="true" aria-labelledby="settings-title"></div>
+  <aside class="settings-panel" id="settings-panel">
+    <div class="settings-header"><h2 id="settings-title">⚙️ การตั้งค่า</h2><button class="btn-icon" id="btn-settings-close" aria-label="ปิด">✕</button></div>
+    <div class="settings-body">
+      <div class="settings-section"><label for="setting-api-key">🔑 Gemini API Key</label><div class="input-group"><input type="password" id="setting-api-key" placeholder="AIzaSy..." autocomplete="off" spellcheck="false" /><button class="input-toggle-eye" id="toggle-eye" aria-label="แสดง/ซ่อน">👁</button></div><a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" class="settings-link">🔗 รับ API Key ฟรีที่ Google AI Studio →</a></div>
+      <div class="settings-divider"></div>
+      <div class="settings-section"><label for="setting-model">🤖 เลือกโมเดล AI</label><div class="settings-select-wrapper"><select id="setting-model"><option value="models/gemini-3.5-flash-lite">⚡ Gemini 3.5 Flash Lite</option></select></div><div id="model-status" class="model-status" style="display:none"></div></div>
+      <div class="settings-divider"></div>
+      <div class="settings-section"><label for="setting-voice">🔊 โมเดลเสียงอ่าน</label><div class="settings-select-wrapper"><select id="setting-voice"><option value="auto">✨ อัตโนมัติ — เสียงธรรมชาติ (แนะนำ)</option></select></div></div>
+    </div>
+    <div class="settings-footer"><button class="btn-save" id="btn-save-settings">💾 บันทึก</button><button class="btn-clear-data" id="btn-clear-data">🗑️ ล้างทั้งหมด</button></div>
+  </aside>
+
+  <main class="astro-wrapper">
+    <header class="astro-hero"><img class="astro-hero-icon" src="../icons_6/512.png" alt="ไอคอนดูดวงยุโรป" /><h1>ดูดวงยุโรป</h1><p>โหราศาสตร์ตะวันตก ราศี ลัคนา และจังหวะชีวิต</p></header>
+    <form class="astro-card" id="astro-form">
+      <div class="astro-form-grid">
+        <label class="astro-field"><span>วันเดือนปีเกิด</span><input id="astro-date" type="date" required /></label>
+        <label class="astro-field"><span>เวลาเกิด</span><input id="astro-time" type="time" value="12:00" required /></label>
+        <label class="astro-field"><span>สถานที่เกิด</span><input id="astro-place" type="text" placeholder="เช่น กรุงเทพมหานคร" required /></label>
+        <label class="astro-field"><span>เพศ</span><select id="astro-gender"><option>ไม่ระบุ</option><option>ชาย</option><option>หญิง</option></select></label>
+      </div>
+      <label class="astro-field astro-field-full"><span>หัวข้อที่อยากรู้ <em>(พิมพ์เองได้ ไม่บังคับ)</em></span><input id="astro-topic" type="text" list="western-topic-suggestions" placeholder="เช่น ความรัก การงาน หรือคำถามของคุณ" autocomplete="off" /><datalist id="western-topic-suggestions"><option value="ภาพรวมบุคลิก"></option><option value="การงานและเป้าหมาย"></option><option value="ความรักและความสัมพันธ์"></option><option value="การเงินและโอกาส"></option><option value="คำแนะนำช่วงนี้"></option></datalist></label>
+      <label class="astro-field astro-field-full"><span>รายละเอียดเพิ่มเติม (ถ้ามี)</span><textarea id="astro-note" rows="3" placeholder="เล่าเป้าหมายหรือคำถามเพิ่มเติมได้"></textarea></label>
+      <button class="astro-cta" id="astro-run" type="submit">♈ วิเคราะห์ดวง</button>
+    </form>
+    <section id="astro-result" aria-live="polite"></section>
+  </main>
+
+  <div class="install-banner" id="install-banner" role="complementary"><div class="install-banner-icon">⬇️</div><div class="install-banner-text"><strong>ติดตั้งเทพซ่า 007</strong><span>บันทึกลงมือถือ</span></div><div class="install-banner-actions"><button class="btn-install" id="btn-install-pwa">ติดตั้ง</button><button class="btn-dismiss" id="btn-dismiss-pwa" aria-label="ปิด">✕</button></div></div>
+  <script src="../js/app.js"></script><script src="../js/models.js"></script><script src="../js/western.js"></script>
+</body>
+</html>

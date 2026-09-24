@@ -52,6 +52,63 @@ for (const suit of SUITS) {
 }
 
 const CARD_POSITIONS = ['อดีต', 'ปัจจุบัน', 'อนาคต'];
+const CARD_IMAGE_PATH = '../icon_sss/Major_Arcana/';
+const CARD_IMAGE_FILES = [
+  'Ace_of_Pentacles_—_ไพ่ทาโรต์,_I_Ace_of_Pentacles.webp', 'Ace_of_Swords_—_ไพ่ทาโรต์,_I_Ace_of_Swords.webp',
+  'Eight_of_Cups_—_ไพ่ทาโรต์,_VIII_Eight_of_Cups.webp', 'Eight_of_Pentacles_—_ไพ่ทาโรต์,_VIII_Eight_of_Pentacles.webp',
+  'Eight_of_Swords_—_ไพ่ทาโรต์,_VIII_Eight_of_Swords.webp', 'Five_of_Cups_—_ไพ่ทาโรต์,_V_Five_of_Cups.webp',
+  'Five_of_Pentacles_—_ไพ่ทาโรต์,_V_Five_of_Pentacles.webp', 'Five_of_Swords_—_ไพ่ทาโรต์,_V_Five_of_Swords.webp',
+  'Four_of_Pentacles_—_ไพ่ทาโรต์,_IV_Four_of_Pentacles.webp', 'Four_of_Swords_—_ไพ่ทาโรต์,_IV_Four_of_Swords.webp',
+  'King_of_Cups_—_ไพ่ทาโรต์,_King_of_Cups.webp', 'King_of_Pentacles_—_ไพ่ทาโรต์,_King_of_Pentacles.webp',
+  'King_of_Swords_—_ไพ่ทาโรต์,_King_of_Swords.webp', 'Knight_of_Cups_—_ไพ่ทาโรต์,_Knight_of_Cups.webp',
+  'Knight_of_Pentacles_—_ไพ่ทาโรต์,_Knight_of_Pentacles.webp', 'Nine_of_Cups_—_ไพ่ทาโรต์,_IX_Nine_of_Cups.webp',
+  'Nine_of_Pentacles_—_ไพ่ทาโรต์,_IX_Nine_of_Pentacles.webp', 'Nine_of_Swords_—_ไพ่ทาโรต์,_IX_Nine_of_Swords.webp',
+  'Page_of_Cups_—_ไพ่ทาโรต์,_Page_of_Cups.webp', 'Page_of_Pentacles_—_ไพ่ทาโรต์,_Page_of_Pentacles.webp',
+  'Page_of_Swords_—_ไพ่ทาโรต์,_Page_of_Swords.webp', 'Queen_of_Cups_—_ไพ่ทาโรต์,_Queen_of_Cups.webp',
+  'Queen_of_Pentacles_—_ไพ่ทาโรต์,_Queen_of_Pentacles.webp', 'Queen_of_Swords_—_ไพ่ทาโรต์,_Queen_of_Swords.webp',
+  'Seven_of_Cups_—_ไพ่ทาโรต์,_VII_Seven_of_Cups.webp', 'Seven_of_Pentacles_—_ไพ่ทาโรต์,_VII_Seven_of_Pentacles.webp',
+  'Seven_of_Swords_—_ไพ่ทาโรต์,_VII_Seven_of_Swords.webp', 'Six_of_Cups_—_ไพ่ทาโรต์,_VI_Six_of_Cups.webp',
+  'Six_of_Pentacles_—_ไพ่ทาโรต์,_VI_Six_of_Pentacles.webp', 'Ten_of_Cups_—_ไพ่ทาโรต์,_X_Ten_of_Cups.webp',
+  'Ten_of_Pentacles_—_ไพ่ทาโรต์,_X_Ten_of_Pentacles.webp', 'Ten_of_Swords_—_ไพ่ทาโรต์,_X_Ten_of_Swords.webp',
+  'Three_of_Pentacles_—_ไพ่ทาโรต์,_III_Three_of_Pentacles.webp', 'Three_of_Swords_—_ไพ่ทาโรต์,_III_Three_of_Swords.webp',
+  'Two_of_Pentacles_—_ไพ่ทาโรต์,_II_Two_of_Pentacles.webp', 'Two_of_Swords_—_ไพ่ทาโรต์,_II_Two_of_Swords.webp',
+  'ความยุติธรรม_—_ไพ่ทาโรต์,_XI_Justice.webp', 'ควีนออฟวอนด์ส_—_ไพ่ทาโรต์,_Queen_of_Wands.webp',
+  'คิงออฟวอนด์ส_—_ไพ่ทาโรต์,_King_of_Wands.webp', 'จัดจ์เมนต์_—_ไพ่ทาโรต์,_XX_Judgement.webp',
+  'ดิเอ็มเพรส_—_ไพ่ทาโรต์,_III_The_Empress.webp', 'ดิเอ็มเพอเรอร์_—_ไพ่ทาโรต์,_IV_The_Emperor.webp',
+  'ทรีออฟคัพส์_—_ไพ่ทาโรต์,_III_Three_of_Cups.webp', 'ทรีออฟวอนด์ส_—_ไพ่ทาโรต์,_III_Three_of_Wands.webp',
+  'ทูออฟคัพส์_—_ไพ่ทาโรต์,_II_Two_of_Cups.webp', 'ทูออฟวอนด์ส_—_ไพ่ทาโรต์,_II_Two_of_Wands.webp',
+  'วีลออฟฟอร์จูน_—_ไพ่ทาโรต์,_X_Wheel_of_Fortune.webp', 'สิบไม้เท้า_—_ไพ่ทาโรต์,_X_Ten_of_Wands.webp',
+  'สเตร็งธ์_—_ไพ่ทาโรต์,_VIII_Strength.webp', 'ห้าไม้เท้า_—_ไพ่ทาโรต์,_V_Five_of_Wands.webp',
+  'เซเว่นออฟวอนด์ส_—_ไพ่ทาโรต์,_VII_Seven_of_Wands.webp', 'เดธ_—_ไพ่ทาโรต์,_XIII_Death.webp',
+  'เดอะซัน_—_ไพ่ทาโรต์,_XIX_The_Sun.webp', 'เดอะทาวเวอร์_—_ไพ่ทาโรต์,_XVI_The_Tower.webp',
+  'เดอะฟูล_—_ไพ่ทาโรต์,_0_The_Fool.webp', 'เดอะมูน_—_ไพ่ทาโรต์,_XVIII_The_Moon.webp',
+  'เดอะสตาร์_—_ไพ่ทาโรต์,_XVII_The_Star.webp', 'เดอะเดวิล_—_ไพ่ทาโรต์,_XV_The_Devil.webp',
+  'เดอะเมจิเชียน_—_ไพ่ทาโรต์,_I_The_Magician.webp', 'เดอะเลิฟเวอร์ส_—_ไพ่ทาโรต์,_VI_The_Lovers.webp',
+  'เดอะเวิลด์_—_ไพ่ทาโรต์,_XXI_The_World.webp', 'เดอะเฮอร์มิท_—_ไพ่ทาโรต์,_IX_The_Hermit.webp',
+  'เดอะแชริออท_—_ไพ่ทาโรต์,_VII_The_Chariot.webp', 'เดอะแฮงด์แมน_—_ไพ่ทาโรต์,_XII_The_Hanged_Man.webp',
+  'เดอะไฮพรีสเทส_—_ไพ่ทาโรต์,_II_The_High_Priestess.webp', 'เดอะไฮโรแฟนท์_—_ไพ่ทาโรต์,_V_The_Hierophant.webp',
+  'เทมเพอแรนซ์_—_ไพ่ทาโรต์,_XIV_Temperance.webp', 'เพจออฟวอนด์ส_—_ไพ่ทาโรต์,_Page_of_Wands.webp',
+  'เอซออฟคัพส์_—_ไพ่ทาโรต์,_I_Ace_of_Cups.webp', 'เอซออฟวอนด์ส_—_ไพ่ทาโรต์,_I_Ace_of_Wands.webp',
+  'เอทออฟวอนด์ส_—_ไพ่ทาโรต์,_VIII_Eight_of_Wands.webp', 'โฟร์ออฟคัพส์_—_ไพ่ทาโรต์,_IV_Four_of_Cups.webp',
+  'โฟร์ออฟวอนด์ส_—_ไพ่ทาโรต์,_IV_Four_of_Wands.webp', 'ไนท์ออฟวอนด์ส_—_ไพ่ทาโรต์,_Knight_of_Wands.webp',
+  'ไนน์ออฟวอนด์ส_—_ไพ่ทาโรต์,_IX_Nine_of_Wands.webp', 'ไพ่_6_ดาบ_—_ไพ่ทาโรต์,_VI_Six_of_Swords.webp',
+  'ไพ่_ภาคีดาบ_—_ไพ่ทาโรต์,_Knight_of_Swords.webp', 'ไพ่หกไม้เท้า_—_ไพ่ทาโรต์,_VI_Six_of_Wands.webp'
+];
+
+const ROMAN_NUMERALS = ['0', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX', 'XXI'];
+const MINOR_RANK_ROMAN = { Ace: 'I', '2': 'II', '3': 'III', '4': 'IV', '5': 'V', '6': 'VI', '7': 'VII', '8': 'VIII', '9': 'IX', '10': 'X' };
+const MINOR_RANK_ENGLISH = { Ace: 'Ace', '2': 'Two', '3': 'Three', '4': 'Four', '5': 'Five', '6': 'Six', '7': 'Seven', '8': 'Eight', '9': 'Nine', '10': 'Ten' };
+const SUIT_ENGLISH = { 'ถ้วย': 'Cups', 'ดาบ': 'Swords', 'ไม้เท้า': 'Wands', 'เหรียญ': 'Pentacles' };
+
+function getMajorArcanaImage(card) {
+  const englishName = card.minor
+    ? `${MINOR_RANK_ENGLISH[card.rank] || card.rank}_of_${SUIT_ENGLISH[card.suit]}`
+    : card.name.replaceAll(' ', '_');
+  const rankPrefix = card.minor ? (MINOR_RANK_ROMAN[card.rank] ? `${MINOR_RANK_ROMAN[card.rank]}_` : '') : `${ROMAN_NUMERALS[card.id]}_`;
+  const suffix = `_${rankPrefix}${englishName}.webp`;
+  const filename = CARD_IMAGE_FILES.find(file => file.endsWith(suffix));
+  return filename ? `${CARD_IMAGE_PATH}${encodeURI(filename)}` : '';
+}
 
 const TAROT_SYSTEM_PROMPT = `คุณคือ "เทพซ่า" หมอดูผู้เชี่ยวชาญด้านไพ่ทาโรต์ ไพ่ยิปซี และโหราศาสตร์ตะวันตก
 
@@ -69,24 +126,12 @@ class TarotReader {
     this.selected = [];
     this.phase    = 'deck'; // 'deck' | 'pick' | 'result'
 
-    this._checkDaily();
-    this._bind();
-  }
+    // ล้างข้อจำกัด 24 ชั่วโมงเดิมออก เพื่อให้จับไพ่ได้ตลอดเวลาตามใจชอบ
+    Store.remove(STORAGE.TAROT_DATE);
+    Store.remove(STORAGE.TAROT_RESULT);
 
-  _checkDaily() {
-    const lastDate = Store.get(STORAGE.TAROT_DATE, '');
-    const today    = new Date().toDateString();
-
-    if (lastDate === today) {
-      // Already drawn today — show result
-      const saved = Store.get(STORAGE.TAROT_RESULT, null);
-      if (saved) {
-        this.selected = saved;
-        this._showPhase('result');
-        return;
-      }
-    }
     this._showPhase('deck');
+    this._bind();
   }
 
   _bind() {
@@ -97,9 +142,7 @@ class TarotReader {
   }
 
   _shuffle() {
-    const deckEl = document.getElementById('deck-visual');
-    deckEl?.classList.add('deck-shuffle-anim');
-    setTimeout(() => deckEl?.classList.remove('deck-shuffle-anim'), 500);
+    this._animateDeck('deck-shuffle-anim', 1600);
     this.deck = this._buildShuffledDeck();
     showToast('สับไพ่แล้ว ✨', 'info', 1500);
   }
@@ -109,15 +152,25 @@ class TarotReader {
     // Cut: move top half to bottom
     const cutPoint = Math.floor(this.deck.length / 3) + Math.floor(Math.random() * (this.deck.length / 3));
     this.deck = [...this.deck.slice(cutPoint), ...this.deck.slice(0, cutPoint)];
-    const deckEl = document.getElementById('deck-visual');
-    deckEl?.classList.add('deck-shuffle-anim');
-    setTimeout(() => deckEl?.classList.remove('deck-shuffle-anim'), 500);
+    this._animateDeck('deck-cut-anim', 1800);
     showToast('ตัดไพ่แล้ว 🃏', 'info', 1500);
+  }
+
+  _animateDeck(animationClass, duration) {
+    const deckEl = document.getElementById('deck-visual');
+    if (!deckEl) return;
+
+    deckEl.classList.remove('deck-shuffle-anim', 'deck-cut-anim');
+    void deckEl.offsetWidth;
+    deckEl.classList.add(animationClass);
+    window.setTimeout(() => deckEl.classList.remove(animationClass), duration);
   }
 
   _startPick() {
     if (this.deck.length === 0) this.deck = this._buildShuffledDeck();
     this.selected = [];
+    const dots = document.querySelectorAll('.pick-dot');
+    dots.forEach(dot => dot.classList.remove('filled'));
     this._showPhase('pick');
     this._renderSpread();
   }
@@ -144,10 +197,6 @@ class TarotReader {
   }
 
   async _showResult() {
-    // Save to storage
-    Store.set(STORAGE.TAROT_DATE, new Date().toDateString());
-    Store.set(STORAGE.TAROT_RESULT, this.selected);
-
     this._showPhase('result');
     this._renderResultCards();
     await this._getAIReading();
@@ -170,7 +219,11 @@ class TarotReader {
       face.className = `tarot-card-face${card.reversed ? ' reversed' : ''}`;
       face.style.animationDelay = `${i * 0.2}s`;
       face.innerHTML = `
-        <div class="card-emoji">${card.emoji}</div>
+        <img class="card-image" src="${getMajorArcanaImage(card)}" alt="${card.nameTH}" />`;
+
+      const details = document.createElement('div');
+      details.className = 'result-card-details';
+      details.innerHTML = `
         <div class="card-name">${card.nameTH}</div>
         <div class="card-number">${card.name}</div>`;
 
@@ -180,6 +233,7 @@ class TarotReader {
 
       wrapper.appendChild(pos);
       wrapper.appendChild(face);
+      wrapper.appendChild(details);
       wrapper.appendChild(revLabel);
       container.appendChild(wrapper);
     });
@@ -224,12 +278,31 @@ class TarotReader {
   }
 
   _newReading() {
-    if (!confirm('ล้างผลการอ่านไพ่วันนี้? (สามารถจับใหม่ได้)')) return;
     Store.remove(STORAGE.TAROT_DATE);
     Store.remove(STORAGE.TAROT_RESULT);
     this.selected = [];
     this.deck = [];
+
+    // รีเซ็ตการแสดงผลคำทำนาย
+    const readingBox = document.getElementById('tarot-reading-box');
+    if (readingBox) readingBox.style.display = 'none';
+    const readingEl = document.getElementById('tarot-reading-text');
+    if (readingEl) {
+      readingEl.textContent = '';
+      readingEl.className = 'tarot-reading-text';
+    }
+    const ttsBtn = readingBox?.querySelector('.btn-tts');
+    if (ttsBtn) ttsBtn.remove();
+
+    // รีเซ็ตจุดนับไพ่
+    const dots = document.querySelectorAll('.pick-dot');
+    dots.forEach(dot => dot.classList.remove('filled'));
+
     this._showPhase('deck');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (typeof showToast === 'function') {
+      showToast('พร้อมจับไพ่รอบใหม่แล้ว ✨', 'info', 1500);
+    }
   }
 
   _renderSpread() {
@@ -242,7 +315,6 @@ class TarotReader {
     for (let i = 0; i < count; i++) {
       const card = document.createElement('div');
       card.className = 'spread-card';
-      card.innerHTML = '🌙';
       card.dataset.index = i;
       card.addEventListener('click', () => this._pickCard(i));
       container.appendChild(card);
@@ -267,20 +339,10 @@ class TarotReader {
       if (el) el.style.display = (p === phase) ? 'block' : 'none';
     });
 
-    // Show/hide daily limit notice
+    // ซ่อนกล่องแจ้งเตือนลิมิตรายวัน (ให้เปิดไพ่ได้ตลอดเวลา)
     const limitNotice = document.getElementById('daily-limit-notice');
     if (limitNotice) {
-      if (phase === 'result') {
-        const nextMidnight = new Date();
-        nextMidnight.setDate(nextMidnight.getDate() + 1);
-        nextMidnight.setHours(0, 0, 0, 0);
-        const hoursLeft = Math.ceil((nextMidnight - Date.now()) / 3600000);
-        const el = limitNotice.querySelector('.reset-time');
-        if (el) el.textContent = `รีเซ็ตใหม่ใน ${hoursLeft} ชั่วโมง (เที่ยงคืน)`;
-        limitNotice.style.display = 'block';
-      } else {
-        limitNotice.style.display = 'none';
-      }
+      limitNotice.style.display = 'none';
     }
   }
 }
