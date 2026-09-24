@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tepsa-007-v17';
+const CACHE_NAME = 'tepsa-007-v18';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -15,6 +15,7 @@ const STATIC_ASSETS = [
   './js/tarot.js',
   './js/thai.js',
   './js/chinese.js',
+  './js/western.js',
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png',
